@@ -9,11 +9,14 @@ class Run(unittest.TestCase):
         self.lp = lp.ListProcessing()
         self.sp = sp.SubstringAndPalindrome()
 
-    def test_two_sum_p1(self):
+    def test_two_sum_leet1_leet3(self):
         self.assertEqual(self.lp.twoSum([3, 2, 4], 6), [1, 2])
 
     def test_length_of_longest_substring(self):
         self.assertEqual(self.sp.lengthOfLongestSubstring('accadddfghdkg'), 5)
+
+    def test_longest_palindrome_leet5(self):
+        self.assertEqual(self.sp.longestPalindrome('daabcbaddd'), 'abcba')
 
 
 if __name__ == '__main__':
