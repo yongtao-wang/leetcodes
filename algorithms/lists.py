@@ -1,4 +1,4 @@
-class ListProcessing(object):
+class Lists(object):
 
     def twoSum(self, nums, target):
         """
