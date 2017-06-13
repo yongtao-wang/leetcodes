@@ -140,9 +140,13 @@ class Strings(object):
     def romanToInt(self, s):
         """
         # 13 Roman to Integer
+        Given a roman numeral, convert it to an integer.
+
+        Input is guaranteed to be within the range from 1 to 3999.
         :type s: str
         :rtype: int
         """
+        '''使用tuple。也可以再设一个变量。只是这样比较Pythonic'''
         d = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
         res, p = 0, 'I'
         for c in s[::-1]:
