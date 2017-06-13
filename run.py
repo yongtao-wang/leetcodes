@@ -45,7 +45,7 @@ class Run(unittest.TestCase):
 
     def test_integer_to_roman_leet12(self):
         self.assertEqual(self.s_op.intToRoman(3154), "MMMCLIV")
-        self.assertEqual(self.s_op.intToRoman(3154), "CCCXXII")
+        self.assertEqual(self.s_op.intToRoman(322), "CCCXXII")
         self.assertEqual(self.s_op.intToRoman(59), "LIX")
 
     def test_roman_to_integer_leet13(self):
