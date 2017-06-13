@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 class Strings(object):
-    def myAtoi(str):
+    def myAtoi(self, str):
         """
         # 8 String to Integer (atoi)
         Implement atoi to convert a string to an integer.
@@ -152,3 +152,18 @@ class Strings(object):
         for c in s[::-1]:
             res, p = res - d[c] if d[c] < d[p] else res + d[c], c
         return res
+
+    def intToRoman(self, num):
+        """
+        # 12 Given an integer, convert it to a roman numeral.
+
+        Input is guaranteed to be within the range from 1 to 3999.
+        :type num: int
+        :rtype: str
+        """
+        m = ["", "M", "MM", "MMM"]
+        c = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"]
+        x = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"]
+        i = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
+        return m[num/1000] + c[(num % 1000)/100] + x[(num % 100)/10] + i[num % 10]
+

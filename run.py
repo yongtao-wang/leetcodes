@@ -27,13 +27,26 @@ class Run(unittest.TestCase):
         self.assertEqual(self.num.reverse(-3154), -4513)
         self.assertEqual(self.num.reverse(1563847412), 0)
 
-    def test_regular_expression_leet8(self):
+    def test_array_to_integer_leet8(self):
+        self.assertEqual(self.s_op.myAtoi('++1'), 0)
+        self.assertEqual(self.s_op.myAtoi('    +4500'), 4500)
+        self.assertEqual(self.s_op.myAtoi(' +-3'), 0)
+        self.assertEqual(self.s_op.myAtoi(' --2  '), 0)
+        self.assertEqual(self.s_op.myAtoi('  +123ab3'), 123)
+        self.assertEqual(self.s_op.myAtoi('-2147483648'), -0x80000000)
+
+    def test_regular_expression_leet10(self):
         self.assertTrue(self.s_op.isMatch("aa", "aa"))
         self.assertTrue(self.s_op.isMatch("aa", "a*"))
         self.assertTrue(self.s_op.isMatch("ab", ".*"))
         self.assertTrue(self.s_op.isMatch("aab", "c*a*b"))
-        self.assertFalse(self.s_op.isMatch("aaa","aa"))
-        self.assertFalse(self.s_op.isMatch("aa","a"))
+        self.assertFalse(self.s_op.isMatch("aaa", "aa"))
+        self.assertFalse(self.s_op.isMatch("aa", "a"))
+
+    def test_integer_to_roman_leet12(self):
+        self.assertEqual(self.s_op.intToRoman(3154), "MMMCLIV")
+        self.assertEqual(self.s_op.intToRoman(3154), "CCCXXII")
+        self.assertEqual(self.s_op.intToRoman(59), "LIX")
 
     def test_roman_to_integer_leet13(self):
         self.assertEqual(self.s_op.romanToInt('XXXII'), 32)
