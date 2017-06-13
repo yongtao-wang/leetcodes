@@ -35,6 +35,11 @@ class Run(unittest.TestCase):
         self.assertFalse(self.s_op.isMatch("aaa","aa"))
         self.assertFalse(self.s_op.isMatch("aa","a"))
 
+    def test_roman_to_integer_leet13(self):
+        self.assertEqual(self.s_op.romanToInt('XXXII'), 32)
+        self.assertEqual(self.s_op.romanToInt('CCXXXIV'), 234)
+        self.assertEqual(self.s_op.romanToInt('XL'), 40)
+
 
 if __name__ == '__main__':
     unittest.main()
