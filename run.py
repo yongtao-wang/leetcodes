@@ -53,6 +53,11 @@ class Run(unittest.TestCase):
         self.assertEqual(self.s_op.romanToInt('CCXXXIV'), 234)
         self.assertEqual(self.s_op.romanToInt('XL'), 40)
 
+    def test_longest_common_prefix_leet14(self):
+        l1 = ['abcfff', 'abcd', 'abcqwerabc', 'abc']
+        l2 = ['qweraaaa', 'qwert', 'qtellars']
+        self.assertEqual(self.s_op.longestCommonPrefix(l1), 'abc')
+        self.assertEqual(self.s_op.longestCommonPrefix(l2), 'q')
 
 if __name__ == '__main__':
     unittest.main()

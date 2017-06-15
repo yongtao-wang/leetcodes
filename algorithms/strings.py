@@ -155,7 +155,8 @@ class Strings(object):
 
     def intToRoman(self, num):
         """
-        # 12 Given an integer, convert it to a roman numeral.
+        # 12 Integer to Roman
+        Given an integer, convert it to a roman numeral.
 
         Input is guaranteed to be within the range from 1 to 3999.
         :type num: int
@@ -166,3 +167,18 @@ class Strings(object):
         x = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"]
         i = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
         return m[num/1000] + c[(num % 1000)/100] + x[(num % 100)/10] + i[num % 10]
+
+    def longestCommonPrefix(self, strs):
+        """
+        # 14 Longest Common Prefix
+        Write a function to find the longest common prefix string amongst an array of strings.
+
+        :type strs: List[str]
+        :rtype: str
+        """
+        count = 0
+        for character in zip(*strs):
+            if len(set(character)) > 1:
+                break
+            count += 1
+        return '' if not strs else strs[0][:count]
