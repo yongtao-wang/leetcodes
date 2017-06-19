@@ -15,6 +15,7 @@ class Run(unittest.TestCase):
 
     def test_two_sum_leet1(self):
         self.assertEqual(self.lp.twoSum([3, 2, 4], 6), [1, 2])
+        self.assertEqual(self.lp.twoSum([1, 2, 2, 3, 4], 4), [1, 2])
 
     def test_length_of_longest_substring_leet3(self):
         self.assertEqual(self.sp.lengthOfLongestSubstring('accadddfghdkg'), 5)
@@ -58,6 +59,11 @@ class Run(unittest.TestCase):
         l2 = ['qweraaaa', 'qwert', 'qtellars']
         self.assertEqual(self.s_op.longestCommonPrefix(l1), 'abc')
         self.assertEqual(self.s_op.longestCommonPrefix(l2), 'q')
+
+    def test_3_sum_leet15(self):
+        nums = [-1, 0, 1, 2, -1, -4]
+        solution = [[-1, 0, 1], [-1, -1, 2]]
+        self.assertEqual(sorted(self.lp.threeSum(nums)), sorted(solution))
 
 if __name__ == '__main__':
     unittest.main()
