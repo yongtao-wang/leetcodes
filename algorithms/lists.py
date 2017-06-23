@@ -54,3 +54,34 @@ class Lists(object):
                     l += 1
                     r -= 1
         return res
+
+    def threeSumClosest(self, nums, target):
+        """
+        # 16 3-Sum Closest
+        Given an array S of n integers, find three integers in S
+        such that the sum is closest to a given number, target.
+        Return the sum of the three integers.
+        You may assume that each input would have exactly one solution.
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        ss = sorted(nums)
+        closest_sum = ss[0] + ss[1] + ss[2]
+        for i in xrange(len(ss) - 2):
+            l = i + 1
+            r = len(ss) - 1
+            while l < r:
+                sum3 = ss[l] + ss[i] + ss[r]
+                if sum3 == target:
+                    return sum3
+                elif abs(sum3 - target) < abs(closest_sum - target):
+                    closest_sum = sum3
+
+                if sum3 < target:
+                    l += 1
+                else:
+                    r -= 1
+        return closest_sum
+
+
