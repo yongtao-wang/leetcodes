@@ -85,4 +85,33 @@ class Lists(object):
                     r -= 1
         return closest_sum
 
-
+    def letterCombinations(self, digits):
+        """
+        # 17. Letter Combinations of a Phone Number
+        Given a digit string, return all possible letter combinations that the number could represent.
+        :type digits: str
+        :rtype: List[str]
+        """
+        if not digits:
+            return []
+        import itertools
+        pad = {
+            '2': ['a', 'b', 'c'],
+            '3': ['d', 'e', 'f'],
+            '4': ['g', 'h', 'i'],
+            '5': ['j', 'k', 'l'],
+            '6': ['m', 'n', 'o'],
+            '7': ['p', 'q', 'r', 's'],
+            '8': ['t', 'u', 'v'],
+            '9': ['w', 'x', 'y', 'z']
+        }
+        res = []
+        out = []
+        for d in digits:
+            if d not in pad:
+                return None
+            res.append(pad[d])
+        cartesian = list(itertools.product(*res))
+        for c in cartesian:
+            out.append(''.join(c))
+        return out

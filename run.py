@@ -65,5 +65,14 @@ class Run(unittest.TestCase):
         solution = [[-1, 0, 1], [-1, -1, 2]]
         self.assertEqual(sorted(self.lp.threeSum(nums)), sorted(solution))
 
+    def test_digit_letter_combination(self):
+        digits = '233'
+        expected = ['add', 'ade', 'adf', 'aed', 'aee', 'aef', 'afd', 'afe', 'aff',
+                    'bdd', 'bde', 'bdf', 'bed', 'bee', 'bef', 'bfd', 'bfe', 'bff',
+                    'cdd', 'cde', 'cdf', 'ced', 'cee', 'cef', 'cfd', 'cfe', 'cff']
+        self.assertEqual(self.lp.letterCombinations(digits), expected)
+        self.assertIsNone(self.lp.letterCombinations('419'))
+
+
 if __name__ == '__main__':
     unittest.main()
