@@ -32,13 +32,26 @@ class Lists(object):
         :rtype: List[List[int]]
         """
         '''使用左右逼近能达到logN。总效率N * logN'''
+        '''优化后的速度能达到98.04%，未优化时为68.44%'''
         res = []
         nums.sort()  # 如果不想改变list顺序，可以使用sorted(nums)
         for i in xrange(len(nums) - 2):
+
+            # some optimization
+            if nums[i] > 0:
+                break
+
             if i > 0 and nums[i] == nums[i-1]:
                 continue
             l = i + 1
             r = len(nums) - 1
+
+            # some optimization, too
+            if nums[l] > -nums[i] / 2.0:
+                continue
+            if nums[r] < -nums[i] / 2.0:
+                continue
+
             while l < r:
                 s = nums[i] + nums[l] + nums[r]
                 if s > 0:
@@ -115,3 +128,79 @@ class Lists(object):
         for c in cartesian:
             out.append(''.join(c))
         return out
+
+    def fourSum(self, nums, target):
+        """
+        # 18 4-Sum
+        Given an array S of n integers, are there elements a, b, c, and d in S
+        such that a + b + c + d = target? Find all unique quadruplets in the array
+        which gives the sum of target.
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        '''
+        这是一个较为优化的算法，将4-sum转变成两个2-sum。精益求精。
+        
+        def fourSum(self, nums, target):
+            def findNsum(nums, target, N, result, results):
+                if len(nums) < N or N < 2 or target < nums[0]*N or target > nums[-1]*N:  # early termination
+                    return
+                if N == 2: # two pointers solve sorted 2-sum problem
+                    l,r = 0,len(nums)-1
+                    while l < r:
+                        s = nums[l] + nums[r]
+                        if s == target:
+                            results.append(result + [nums[l], nums[r]])
+                            l += 1
+                            while l < r and nums[l] == nums[l-1]:
+                                l += 1
+                        elif s < target:
+                            l += 1
+                        else:
+                            r -= 1
+                else: # recursively reduce N
+                    for i in range(len(nums)-N+1):
+                        if i == 0 or (i > 0 and nums[i-1] != nums[i]):
+                            findNsum(nums[i+1:], target-nums[i], N-1, result+[nums[i]], results)
+        
+            results = []
+            findNsum(sorted(nums), target, 4, [], results)
+            return results
+        '''
+        nums.sort()
+        result = []
+        for i in xrange(len(nums)-3):
+            if nums[i] > target / 4.0:
+                break
+            if i > 0 and nums[i] == nums[i-1]:
+                continue
+            target2 = target - nums[i]
+            for j in xrange(i+1, len(nums)-2):
+                if nums[j] > target2 / 3.0:
+                    break
+                if j > i+1 and nums[j] == nums[j-1]:
+                    continue
+                l = j + 1
+                r = len(nums) - 1
+                target3 = target2 - nums[j]
+
+                if nums[l] > target3 / 2.0:
+                    continue
+                if nums[r] < target3 / 2.0:
+                    continue
+                while l < r:
+                    sum_lr = nums[l] + nums[r]
+                    if sum_lr == target3:
+                        result.append([nums[i], nums[j], nums[l], nums[r]])
+                        while l < r and nums[l] == nums[l+1]:
+                            l += 1
+                        while l < r and nums[r] == nums[r-1]:
+                            r -= 1
+                        l += 1
+                        r -= 1
+                    elif sum_lr < target3:
+                        l += 1
+                    else:
+                        r -= 1
+        return result
