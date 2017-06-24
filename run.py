@@ -76,7 +76,7 @@ class Run(unittest.TestCase):
     def test_4_sum_leet18(self):
         array = [1, 0, -1, 0, -2, 2]
         target = 0
-        solution = [[-1,  0, 0, 1], [-2, -1, 1, 2], [-2,  0, 0, 2]]
+        solution = [[-1, 0, 0, 1], [-2, -1, 1, 2], [-2, 0, 0, 2]]
         self.assertEqual(sorted(self.lp.fourSum(array, target)), sorted(solution))
 
 if __name__ == '__main__':
