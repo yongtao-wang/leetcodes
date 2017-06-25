@@ -1,5 +1,6 @@
 import unittest
 
+from algorithms import linked_list as lk
 from algorithms import lists as lp
 from algorithms import numbers
 from algorithms import strings
@@ -12,6 +13,7 @@ class Run(unittest.TestCase):
         self.sp = sp.SubstringAndPalindrome()
         self.num = numbers.Numbers()
         self.s_op = strings.Strings()
+        self.link = lk.LinkedList()
 
     def test_two_sum_leet1(self):
         self.assertEqual(self.lp.twoSum([3, 2, 4], 6), [1, 2])
@@ -78,6 +80,28 @@ class Run(unittest.TestCase):
         target = 0
         solution = [[-1, 0, 0, 1], [-2, -1, 1, 2], [-2, 0, 0, 2]]
         self.assertEqual(sorted(self.lp.fourSum(array, target)), sorted(solution))
+
+    def test_remove_nth_node_leet19(self):
+        n1 = lk.ListNode(1)
+        n2 = lk.ListNode(2)
+        n3 = lk.ListNode(3)
+        n4 = lk.ListNode(4)
+        n5 = lk.ListNode(5)
+        self.assertEqual(self.link.removeNthFromEnd(n1, 1), None)
+        n1.next = n2
+        self.assertEqual(self.link.removeNthFromEnd(n1, 2), n2)
+        n1.next = n2
+        n2.next = n3
+        n3.next = n4
+        n4.next = n5
+        self.link.removeNthFromEnd(n1, 3)
+        values = ''
+        h = n1
+        while h:
+            values += str(h.val)
+            h = h.next
+        self.assertEqual(values, '1245')
+
 
 if __name__ == '__main__':
     unittest.main()

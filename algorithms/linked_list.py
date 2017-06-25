@@ -66,7 +66,7 @@ class LinkedList(object):
 
     def findMedianSortedArrays(self, nums1, nums2):
         """
-        # 4
+        # 4 Median of two sorted arrays
         There are two sorted arrays nums1 and nums2 of size m and n respectively.
 
         Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
@@ -75,3 +75,28 @@ class LinkedList(object):
         :rtype: float
         """
         pass
+
+    def removeNthFromEnd(self, head, n):
+        """
+        # 19. Remove Nth Node From End of List
+        Given a linked list, remove the nth node from the end of list and return its head.
+        :type head: ListNode
+        :type n: int
+        :rtype: ListNode
+        """
+        if not head:
+            return None
+        p1 = head
+        p2 = head
+        for _ in xrange(n):
+            if not p2:
+                return head
+            p2 = p2.next
+        # meaning head is to be removed
+        if not p2:
+            return head.next
+        while p2.next:
+            p2 = p2.next
+            p1 = p1.next
+        p1.next = p1.next.next
+        return head
