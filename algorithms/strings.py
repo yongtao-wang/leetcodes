@@ -207,3 +207,25 @@ class Strings(object):
             return True
         else:
             return False
+
+    def generateParenthesis(self, n):
+        """
+        # 22. Generate Parentheses
+        Given n pairs of parentheses, write a function to generate
+        all combinations of well-formed parentheses.
+
+        :type n: int
+        :rtype: List[str]
+        """
+        self._parentheses = []
+        '''本题和lists中的#17颇有不同。不能用笛卡尔积'''
+        def generate(p, left, right):
+            if left:
+                generate(p + '(', left - 1, right)
+            if right > left:
+                generate(p + ')', left, right - 1)
+            if not right:
+                self._parentheses += p,
+            return self._parentheses
+
+        return generate('', n, n)

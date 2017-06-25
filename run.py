@@ -102,7 +102,7 @@ class Run(unittest.TestCase):
             h = h.next
         self.assertEqual(values, '1245')
 
-    def test_valid_parentheses(self):
+    def test_valid_parentheses_leet20(self):
         p1 = '(({}[{}][()])[])'
         p2 = ']]]'
         p3 = '[[]}'
@@ -111,6 +111,10 @@ class Run(unittest.TestCase):
         self.assertFalse(self.s_op.isValidParentheses(p2))
         self.assertFalse(self.s_op.isValidParentheses(p3))
         self.assertFalse(self.s_op.isValidParentheses(p4))
+
+    def test_generate_parentheses_leet22(self):
+        answer = ['((()))', '(()())', '(())()', '()(())', '()()()']
+        self.assertEqual(sorted(self.s_op.generateParenthesis(3)), sorted(answer))
 
 
 if __name__ == '__main__':
