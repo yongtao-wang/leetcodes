@@ -182,3 +182,28 @@ class Strings(object):
                 break
             count += 1
         return '' if not strs else strs[0][:count]
+
+    def isValidParentheses(self, s):
+        """
+        # 20. Valid Parentheses
+        Given a string containing just the characters '(', ')', '{', '}', '[' and ']',
+        determine if the input string is valid.
+        :type s: str
+        :rtype: bool
+        """
+        stack = []
+        mapping = {')': '(', '}': '{', ']':'['}
+        for p in s:
+            if p in ['(', '{', '[']:
+                stack.append(p)
+            elif p in [')', '}', ']']:
+                if not stack:
+                    return False
+                if stack[-1] == mapping[p]:
+                    stack.pop()  # much faster than del stack[-1]
+                else:
+                    return False
+        if not stack:
+            return True
+        else:
+            return False

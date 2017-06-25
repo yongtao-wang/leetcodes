@@ -102,6 +102,16 @@ class Run(unittest.TestCase):
             h = h.next
         self.assertEqual(values, '1245')
 
+    def test_valid_parentheses(self):
+        p1 = '(({}[{}][()])[])'
+        p2 = ']]]'
+        p3 = '[[]}'
+        p4 = '([)]'
+        self.assertTrue(self.s_op.isValidParentheses(p1))
+        self.assertFalse(self.s_op.isValidParentheses(p2))
+        self.assertFalse(self.s_op.isValidParentheses(p3))
+        self.assertFalse(self.s_op.isValidParentheses(p4))
+
 
 if __name__ == '__main__':
     unittest.main()
