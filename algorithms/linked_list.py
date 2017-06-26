@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Definition for singly-linked list.
 class ListNode(object):
     def __init__(self, x):
@@ -129,3 +131,48 @@ class LinkedList(object):
 
         head.next = l1 or l2  # PYTHONIC!
         return res.next
+
+    def swapPairs(self, head):
+        """
+        #24. Swap Nodes in Pairs
+
+        Given a linked list, swap every two adjacent nodes and return its head.
+
+        For example,
+        Given 1->2->3->4, you should return the list as 2->1->4->3.
+
+        Your algorithm should use only constant space.
+        You may not modify the values in the list, only nodes itself can be changed.
+
+        :type head: ListNode, None
+        :rtype: ListNode
+        """
+        '''一系列需要用到pre-node的样板'''
+        res = ListNode(0)
+        res.next = head
+        pre = res
+        while head:
+            if not head.next:
+                break
+            current = head
+            follow = head.next
+            rest = follow.next
+            head = follow
+            head.next = current
+            head.next.next = rest
+            pre.next = head
+            pre = head.next
+            head = head.next.next
+        return res.next
+
+
+if __name__ == '__main__':
+    # make debugging easier
+    link = LinkedList()
+    n1 = ListNode(1)
+    n2 = ListNode(2)
+    n3 = ListNode(3)
+    n4 = ListNode(4)
+    n1.next = n2
+    n2.next = n3
+    n3.next = n4
