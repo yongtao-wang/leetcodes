@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import unittest
 
 from algorithms import linked_list as lk
@@ -115,6 +116,22 @@ class Run(unittest.TestCase):
     def test_generate_parentheses_leet22(self):
         answer = ['((()))', '(()())', '(())()', '()(())', '()()()']
         self.assertEqual(sorted(self.s_op.generateParenthesis(3)), sorted(answer))
+
+    def test_swap_nodes_in_pairs_leet24(self):
+        n1 = lk.ListNode(1)
+        n2 = lk.ListNode(2)
+        n3 = lk.ListNode(3)
+        n4 = lk.ListNode(4)
+        self.assertEqual(self.link.swapPairs(None), None)
+        self.assertEqual(self.link.swapPairs(n1), n1)
+        n1.next = n2
+        n2.next = n3
+        n3.next = n4
+        head = self.link.swapPairs(n1)
+        answer = ''
+        while head:
+            answer += str(head.val)
+        self.assertEqual(answer, '2143')
 
 
 if __name__ == '__main__':
