@@ -204,3 +204,29 @@ class Lists(object):
                     else:
                         r -= 1
         return result
+
+    def removeDuplicates(self, nums):
+        """
+        # 26. Remove Duplicates from Sorted Array
+
+        Given a sorted array, remove the duplicates in place
+        such that each element appear only once and return the new length.
+
+        Do not allocate extra space for another array,
+        you must do this in place with constant memory.
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        p = 0
+        q = 0
+        while q < len(nums):
+            if nums[p] == nums[q]:
+                q += 1
+                continue
+            p += 1
+            # or simply nums[p] = nums[q]. speed up from 58% to 83%
+            nums[p], nums[q] = nums[q], nums[p]
+            q += 1
+        return p + 1

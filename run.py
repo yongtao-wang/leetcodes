@@ -131,7 +131,16 @@ class Run(unittest.TestCase):
         answer = ''
         while head:
             answer += str(head.val)
+            head = head.next
         self.assertEqual(answer, '2143')
+
+    def test_remove_duplicates_from_sorted_array_leet26(self):
+        sorted_1 = [1, 1, 2, 3, 4, 4, 5, 5, 5]
+        sorted_2 = []
+        sorted_3 = [1, 1, 1, 1]
+        self.assertEqual(self.lp.removeDuplicates(sorted_1), 5)
+        self.assertEqual(self.lp.removeDuplicates(sorted_2), 0)
+        self.assertEqual(self.lp.removeDuplicates(sorted_3), 1)
 
 
 if __name__ == '__main__':
