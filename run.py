@@ -142,6 +142,13 @@ class Run(unittest.TestCase):
         self.assertEqual(self.lp.removeDuplicates(sorted_2), 0)
         self.assertEqual(self.lp.removeDuplicates(sorted_3), 1)
 
+    def test_remove_element_leet27(self):
+        l1 = [3, 2, 2, 3]
+        l2 = [5, 5, 6, 5]
+        self.assertEqual(sorted(l1[:self.lp.removeElement(l1, 3)]), [2, 2])
+        self.assertEqual(sorted(l2[:self.lp.removeElement(l2, 3)]), sorted(l2))
+        self.assertEqual(self.lp.removeElement([], 8), 0)
+
 
 if __name__ == '__main__':
     unittest.main()

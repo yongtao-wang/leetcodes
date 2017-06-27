@@ -230,3 +230,36 @@ class Lists(object):
             nums[p], nums[q] = nums[q], nums[p]
             q += 1
         return p + 1
+
+    def removeElement(self, nums, val):
+        """
+        27. Remove Element
+
+        Given an array and a value, remove all instances of that value in place
+        and return the new length.
+
+        Do not allocate extra space for another array,
+        you must do this in place with constant memory.
+
+        The order of elements can be changed.
+        It doesn't matter what you leave beyond the new length.
+
+        :type nums: List[int]
+        :type val: int
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        p = 0
+        q = len(nums) - 1
+        while p < q:
+            if nums[q] == val:
+                q -= 1
+                continue
+            if nums[p] == val:
+                nums[p], nums[q] = nums[q], nums[p]
+                q -= 1
+            p += 1
+        if nums[p] is not val:
+            p += 1
+        return p
