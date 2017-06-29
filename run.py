@@ -149,6 +149,14 @@ class Run(unittest.TestCase):
         self.assertEqual(sorted(l2[:self.lp.removeElement(l2, 3)]), sorted(l2))
         self.assertEqual(self.lp.removeElement([], 8), 0)
 
+    def test_search_insert_pos_leet35(self):
+        self.assertEqual(self.lp.searchInsert([1, 3, 5, 6], 5), 2)
+        self.assertEqual(self.lp.searchInsert([1, 3, 5, 6], 2), 1)
+        self.assertEqual(self.lp.searchInsert([1, 3, 5, 6], 7), 4)
+        self.assertEqual(self.lp.searchInsert([1, 3, 5, 6], 0), 0)
+        self.assertEqual(self.lp.searchInsert([1, 3, 5, 6, 9], 6), 3)
+        self.assertEqual(self.lp.searchInsert([], 88), 0)
+
 
 if __name__ == '__main__':
     unittest.main()

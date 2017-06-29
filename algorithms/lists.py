@@ -263,3 +263,34 @@ class Lists(object):
         if nums[p] is not val:
             p += 1
         return p
+
+    def searchInsert(self, nums, target):
+        """
+        35. Search Insert Position
+        Given a sorted array and a target value, return the index if the target is found.
+        If not, return the index where it would be if it were inserted in order.
+
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+        def search(list_num, start, end):
+            if not nums:
+                return start
+            mid = (start + end) / 2
+            if start == end:
+                return start+1 if nums[start] < target else start
+            if start + 1 == end:
+                if target <= nums[start]:
+                    return start
+                elif target > nums[end]:
+                    return end + 1
+                else:
+                    return end
+            if nums[mid] == target:
+                return mid
+            if nums[mid] < target:
+                return search(list_num[mid+1:end+1], mid, end)
+            if nums[mid] > target:
+                return search(list_num[start:mid], start, mid)
+        return search(nums, 0, len(nums)-1)
