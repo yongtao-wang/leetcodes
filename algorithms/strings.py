@@ -229,3 +229,30 @@ class Strings(object):
             return self._parentheses
 
         return generate('', n, n)
+
+    def countAndSay(self, n):
+        """
+        # 38. Count and Say
+        Given an integer n, generate the nth term of the count-and-say sequence.
+        Google count-and-say if you don't know what it is.
+
+        :type n: int
+        :rtype: str
+        """
+        base = '1'
+        if n == 1:
+            return base
+        for _ in range(n - 1):
+            count = 1
+            temp = []
+            for i in range(1, len(base)):
+                if base[i] == base[i - 1]:
+                    count += 1
+                else:
+                    temp.append(str(count))
+                    temp.append(base[i - 1])
+                    count = 1
+            temp.append(str(count))
+            temp.append(base[-1])
+            base = ''.join(temp)
+        return base

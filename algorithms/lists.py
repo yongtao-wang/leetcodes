@@ -294,3 +294,18 @@ class Lists(object):
             if nums[mid] > target:
                 return search(list_num[start:mid], start, mid)
         return search(nums, 0, len(nums)-1)
+
+    def nextPermutation(self, nums):
+        """
+        #31. Next Permutation
+        Implement next permutation, which rearranges numbers into the lexicographically
+        next greater permutation of numbers.
+
+        If such arrangement is not possible, it must rearrange it as the lowest
+        possible order (ie, sorted in ascending order).
+
+        The replacement must be in-place, do not allocate extra memory.
+
+        :type nums: List[int]
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """

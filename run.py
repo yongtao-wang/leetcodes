@@ -157,6 +157,13 @@ class Run(unittest.TestCase):
         self.assertEqual(self.lp.searchInsert([1, 3, 5, 6, 9], 6), 3)
         self.assertEqual(self.lp.searchInsert([], 88), 0)
 
+    def test_count_and_say_leet38(self):
+        self.assertEqual(self.s_op.countAndSay(1), '1')
+        self.assertEqual(self.s_op.countAndSay(4), '1211')
+        self.assertEqual(self.s_op.countAndSay(6), '312211')
+        self.assertEqual(self.s_op.countAndSay(10), '13211311123113112211')
+        self.assertEqual(self.s_op.countAndSay(12), '3113112221232112111312211312113211')
+
 
 if __name__ == '__main__':
     unittest.main()
