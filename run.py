@@ -149,6 +149,21 @@ class Run(unittest.TestCase):
         self.assertEqual(sorted(l2[:self.lp.removeElement(l2, 3)]), sorted(l2))
         self.assertEqual(self.lp.removeElement([], 8), 0)
 
+    def test_next_permutation_leet31(self):
+        l1 = [1, 2]
+        l2 = [1, 5, 3]
+        l3 = [5, 3, 1]
+        l4 = [2, 5, 3, 1]
+        self.lp.nextPermutation(l1)
+        self.lp.nextPermutation(l2)
+        self.lp.nextPermutation(l3)
+        self.lp.nextPermutation(l4)
+        self.assertEqual(l1, [2, 1])
+        self.assertEqual(l2, [3, 1, 5])
+        self.assertEqual(l3, [1, 3, 5])
+        self.assertEqual(l4, [3, 1, 2, 5])
+
+
     def test_search_insert_pos_leet35(self):
         self.assertEqual(self.lp.searchInsert([1, 3, 5, 6], 5), 2)
         self.assertEqual(self.lp.searchInsert([1, 3, 5, 6], 2), 1)

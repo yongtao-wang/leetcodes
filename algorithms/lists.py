@@ -309,3 +309,21 @@ class Lists(object):
         :type nums: List[int]
         :rtype: void Do not return anything, modify nums in-place instead.
         """
+        for i in xrange(len(nums)-1, -1, -1):
+            if i == 0:  # meaning the list is at maximum permutation
+                nums[:] = nums[::-1]
+                return
+            if nums[i-1] < nums[i]:
+                # search from rightmost to find the first one larger than nums[i-1]
+                for k in xrange(len(nums)-1, i-1, -1):
+                    if nums[k] > nums[i-1]:
+                        nums[i-1], nums[k] = nums[k], nums[i-1]
+                        break
+                # reverse from i
+                nums[i:] = nums[i:][::-1]
+                return
+
+
+if __name__ == '__main__':
+    # debug template
+    l = Lists()
