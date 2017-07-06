@@ -360,6 +360,47 @@ class Lists(object):
                     right = mid -1
         return -1
 
+    def searchRange(self, nums, target):
+        """
+        # 34. Search for a Range
+        Given an array of integers sorted in ascending order,
+        find the starting and ending position of a given target value.
+
+        Your algorithm's runtime complexity must be in the order of O(log n).
+
+        If the target is not found in the array, return [-1, -1].
+
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        i = 0
+        j = len(nums) - 1
+        ans = [-1, -1]
+        if not nums:
+            return ans
+        while i < j:
+            mid = (i + j) / 2
+            if nums[mid] < target:
+                i = mid + 1
+            else:
+                j = mid
+        if nums[i] != target:
+            return ans
+        else:
+            ans[0] = i
+
+        j = len(nums) - 1
+        while i < j:
+            mid = (i + j) / 2 + 1
+            if nums[mid] > target:
+                j = mid - 1
+            else:
+                i = mid
+        ans[1] = j
+        return ans
+
+
 
 if __name__ == '__main__':
     # debug template

@@ -172,6 +172,11 @@ class Run(unittest.TestCase):
         self.assertEqual(self.lp.search(l2, 9), -1)
         self.assertEqual(self.lp.search(l3, 4), 4)
 
+    def test_search_for_a_range_leet34(self):
+        l1 = [5, 7, 7, 8, 8, 10]
+        self.assertEqual(self.lp.searchRange(l1, 8), [3, 4])
+        self.assertEqual(self.lp.searchRange(l1, 6), [-1, -1])
+
     def test_search_insert_pos_leet35(self):
         self.assertEqual(self.lp.searchInsert([1, 3, 5, 6], 5), 2)
         self.assertEqual(self.lp.searchInsert([1, 3, 5, 6], 2), 1)
