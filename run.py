@@ -6,6 +6,7 @@ from algorithms import lists as lp
 from algorithms import numbers
 from algorithms import strings
 from algorithms import substring_and_palindrome as sp
+from algorithms import dynamic_programming as dp
 
 
 class Run(unittest.TestCase):
@@ -15,6 +16,7 @@ class Run(unittest.TestCase):
         self.num = numbers.Numbers()
         self.s_op = strings.Strings()
         self.link = lk.LinkedList()
+        self.dp = dp.DynamicProgramming()
 
     def test_two_sum_leet1(self):
         self.assertEqual(self.lp.twoSum([3, 2, 4], 6), [1, 2])
@@ -198,6 +200,10 @@ class Run(unittest.TestCase):
         self.assertEqual(self.s_op.countAndSay(6), '312211')
         self.assertEqual(self.s_op.countAndSay(10), '13211311123113112211')
         self.assertEqual(self.s_op.countAndSay(12), '3113112221232112111312211312113211')
+
+    def test_coin_change_leet322(self):
+        self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
+        self.assertEqual(self.dp.coinChange([2], 3), -1)
 
 
 if __name__ == '__main__':
