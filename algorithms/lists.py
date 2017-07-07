@@ -400,6 +400,47 @@ class Lists(object):
         ans[1] = j
         return ans
 
+    def isValidSudoku(self, board):
+        """
+        # 36. Valid Sudoku
+        Determine if a Sudoku is valid, according to: Sudoku Puzzles - The Rules.
+
+        The Sudoku board could be partially filled,
+        where empty cells are filled with the character '.'.
+
+        Note:
+        A valid Sudoku board (partially filled) is not necessarily solvable.
+        Only the filled cells need to be validated.
+        :type board: List[List[str]]
+        :rtype: bool
+        """
+        row_dict = {}
+        col_dict = {}
+        cube_dict = {}
+        if len(board) != 9:
+            return False
+        for i in xrange(len(board)):
+            if len(board[i]) != 9:
+                return False
+
+        for i in xrange(len(board)):
+            if i not in row_dict:
+                row_dict[i] = set()
+            for j in xrange(len(board[0])):
+                if j not in col_dict:
+                    col_dict[j] = set()
+                if (i/3, j/3) not in cube_dict:
+                    cube_dict[(i/3, j/3)] = set()
+
+                if board[i][j] == '.':
+                    continue
+                if board[i][j] in row_dict[i] or board[i][j] in col_dict[j] or board[i][j] in cube_dict[(i/3, j/3)]:
+                    return False
+                row_dict[i].add(board[i][j])
+                col_dict[j].add(board[i][j])
+                cube_dict[(i/3, j/3)].add(board[i][j])
+        return True
+
 
 
 if __name__ == '__main__':

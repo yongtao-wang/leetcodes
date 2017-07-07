@@ -185,6 +185,13 @@ class Run(unittest.TestCase):
         self.assertEqual(self.lp.searchInsert([1, 3, 5, 6, 9], 6), 3)
         self.assertEqual(self.lp.searchInsert([], 88), 0)
 
+    def test_is_valid_sudoku_leet36(self):
+        board = [".87654321","2........","3........",
+                 "4........","5........","6........",
+                 "7........","8........","9........"]
+        self.assertTrue(self.lp.isValidSudoku(board=board))
+        self.assertFalse(self.lp.isValidSudoku(board=[]))
+
     def test_count_and_say_leet38(self):
         self.assertEqual(self.s_op.countAndSay(1), '1')
         self.assertEqual(self.s_op.countAndSay(4), '1211')
