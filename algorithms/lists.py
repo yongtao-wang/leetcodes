@@ -434,15 +434,132 @@ class Lists(object):
 
                 if board[i][j] == '.':
                     continue
-                if board[i][j] in row_dict[i] or board[i][j] in col_dict[j] or board[i][j] in cube_dict[(i/3, j/3)]:
+                if board[i][j] in row_dict[i] or board[i][j] in col_dict[j] \
+                        or board[i][j] in cube_dict[(i/3, j/3)]:
                     return False
                 row_dict[i].add(board[i][j])
                 col_dict[j].add(board[i][j])
                 cube_dict[(i/3, j/3)].add(board[i][j])
         return True
 
+    def combinationSum(self, candidates, target):
+        """
+        # 39. Combination Sum
+        Given a set of candidate numbers (C) (without duplicates) and a target number (T),
+        find all unique combinations in C where the candidate numbers sums to T.
+
+        The same repeated number may be chosen from C unlimited number of times.
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+        def dfs(nums, target, index, path, res):
+            if target < 0:
+                return
+            if target == 0:
+                res.append(path)
+                return
+            for i in xrange(index, len(nums)):
+                dfs(nums, target-nums[i], i, path+[nums[i]], res)
+        res = []
+        candidates.sort()
+        dfs(candidates, target, 0, [], res)
+        return res
+
+    def combinationSum2(self, candidates, target):
+        """
+        # 40. Combination Sum II
+        Given a collection of candidate numbers (C) and a target number (T),
+        find all unique combinations in C where the candidate numbers sums to T.
+
+        Each number in C may only be used once in the combination.
+        :type candidates: List[int]
+        :type target: int
+        :rtype: List[List[int]]
+        """
+
+        def dfs(nums, target, index, path, res):
+            if target < 0:
+                return
+            if target == 0:
+                res.append(path)
+                return
+            for i in xrange(index, len(nums)):
+                if i != index and nums[i] == nums[i - 1]:
+                    continue
+                dfs(nums, target - nums[i], i + 1, path + [nums[i]], res)
+        res = []
+        candidates.sort()
+        dfs(candidates, target, 0, [], res)
+        return res
+
+    def permute(self, nums):
+        """
+        # 46. Permutations
+        Given a collection of distinct numbers, return all possible permutations.
+
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        def dfs(n, path, ans):
+            if not n:
+                ans.append(path)
+                return
+            for i in xrange(len(n)):
+                dfs(n[:i] + n[i + 1:], path + [n[i]], ans)
+        res = []
+        dfs(nums, [], res)
+        return res
+
+    def permuteUnique(self, nums):
+        """
+        # 47. Permutations II
+        Given a collection of numbers that might contain duplicates,
+        return all possible unique permutations.
+
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        def dfs(n, path, ans):
+            if not n:
+                ans.append(path)
+                return
+            for i in xrange(len(n)):
+                if i != 0 and n[i] == n[i-1]:
+                    continue
+                dfs(n[:i] + n[i + 1:], path + [n[i]], ans)
+        nums.sort()
+        res = []
+        dfs(nums, [], res)
+        return res
+
+    def rotate(self, matrix):
+        """
+        # 48. Rotate Image
+        You are given an n x n 2D matrix representing an image.
+        Rotate the image by 90 degrees (clockwise).
+
+        :type matrix: List[List[int]]
+        :rtype: void Do not return anything, modify matrix in-place instead.
+        """
+        '''
+        取巧的方法是:
+                matrix[::] = zip(*matrix[::-1])
+        1-line solution
+        '''
+        if not matrix:
+            return matrix
+        if len(matrix) != len(matrix[0]):
+            return None
+        n = len(matrix)
+        matrix.reverse()
+        for i in xrange(n):
+            for j in xrange(i + 1, n):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        return matrix
 
 
 if __name__ == '__main__':
     # debug template
     l = Lists()
+    print l.rotate([[1,2],[3,4]])
