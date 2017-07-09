@@ -558,8 +558,33 @@ class Lists(object):
                 matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
         return matrix
 
+    def groupAnagrams(self, strs):
+        """
+        # 49. Group Anagrams
+        Given an array of strings, group anagrams together.
+
+        For example, given: ["eat", "tea", "tan", "ate", "nat", "bat"],
+        Return:
+
+        [
+          ["ate", "eat","tea"],
+          ["nat","tan"],
+          ["bat"]
+        ]
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+        dictionary = {}
+        for s in strs:
+            key = ''.join(sorted(s))
+            if key in dictionary:
+                dictionary[key].append(s)
+            else:
+                dictionary[key] = [s]
+        return [i for i in dictionary.itervalues()]
+
 
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.rotate([[1,2],[3,4]])
+    print l.groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"])

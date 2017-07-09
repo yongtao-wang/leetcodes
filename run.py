@@ -223,6 +223,15 @@ class Run(unittest.TestCase):
         self.assertEqual(self.lp.rotate(img_1), [[3,1],[4,2]])
         self.assertEqual(self.lp.rotate(img_2), [[7,4,1],[8,5,2],[9,6,3]])
 
+    def test_group_anagrams_leet49(self):
+        anagrams = ["eat","tea","tan","ate","nat","bat"]
+        self.assertEqual(sorted(self.lp.groupAnagrams(anagrams)),
+                         sorted([["tan","nat"],["bat"],["eat","tea","ate"]]))
+
+    def test_pow_leet50(self):
+        self.assertEqual("{:.5f}".format(self.num.myPow(8.88023, 3)), str(700.28148))
+        self.assertEqual("{:.5f}".format(self.num.myPow(8.88023, -3)), str(0.00143))
+
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
         self.assertEqual(self.dp.coinChange([2], 3), -1)
