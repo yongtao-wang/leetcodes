@@ -201,6 +201,28 @@ class Run(unittest.TestCase):
         self.assertEqual(self.s_op.countAndSay(10), '13211311123113112211')
         self.assertEqual(self.s_op.countAndSay(12), '3113112221232112111312211312113211')
 
+    def test_combination_sum_leet39(self):
+        self.assertEqual(sorted(self.lp.combinationSum([2, 3, 6, 7], 7)),
+                         sorted([[2,2,3],[7]]))
+
+    def test_combination_sum_2_leet40(self):
+        self.assertEqual(sorted(self.lp.combinationSum2([10,1,2,7,6,1,5], 8)),
+                         sorted([[1,1,6],[1,2,5],[1,7],[2,6]]))
+
+    def test_permutation_leet46(self):
+        self.assertEqual(sorted(self.lp.permute([1, 2, 3])),
+                         sorted([[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]))
+
+    def test_permutation_2_leet47(self):
+        self.assertEqual(sorted(self.lp.permuteUnique([1,1,2])),
+                         sorted([[1,1,2],[1,2,1],[2,1,1]]))
+
+    def test_rotate_image_leet48(self):
+        img_1 = [[1, 2], [3, 4]]
+        img_2 = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+        self.assertEqual(self.lp.rotate(img_1), [[3,1],[4,2]])
+        self.assertEqual(self.lp.rotate(img_2), [[7,4,1],[8,5,2],[9,6,3]])
+
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
         self.assertEqual(self.dp.coinChange([2], 3), -1)
