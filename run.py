@@ -232,6 +232,9 @@ class Run(unittest.TestCase):
         self.assertEqual("{:.5f}".format(self.num.myPow(8.88023, 3)), str(700.28148))
         self.assertEqual("{:.5f}".format(self.num.myPow(8.88023, -3)), str(0.00143))
 
+    def test_maximum_subarray_leet51(self):
+        self.assertEqual(self.lp.maxSubArray([-2,1,-3,4,-1,2,1,-5,4]), 6)
+
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
         self.assertEqual(self.dp.coinChange([2], 3), -1)
