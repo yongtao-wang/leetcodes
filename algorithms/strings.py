@@ -166,7 +166,7 @@ class Strings(object):
         c = ["", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM"]
         x = ["", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC"]
         i = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
-        return m[num/1000] + c[(num % 1000)/100] + x[(num % 100)/10] + i[num % 10]
+        return m[num / 1000] + c[(num % 1000) / 100] + x[(num % 100) / 10] + i[num % 10]
 
     def longestCommonPrefix(self, strs):
         """
@@ -192,7 +192,7 @@ class Strings(object):
         :rtype: bool
         """
         stack = []
-        mapping = {')': '(', '}': '{', ']':'['}
+        mapping = {')': '(', '}': '{', ']': '['}
         for p in s:
             if p in ['(', '{', '[']:
                 stack.append(p)
@@ -219,6 +219,7 @@ class Strings(object):
         """
         self._parentheses = []
         '''本题和lists中的#17颇有不同。不能用笛卡尔积'''
+
         def generate(p, left, right):
             if left:
                 generate(p + '(', left - 1, right)

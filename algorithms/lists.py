@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 class Lists(object):
-
     def twoSum(self, nums, target):
         """
         # 1
@@ -41,7 +40,7 @@ class Lists(object):
             if nums[i] > 0:
                 break
 
-            if i > 0 and nums[i] == nums[i-1]:
+            if i > 0 and nums[i] == nums[i - 1]:
                 continue
             l = i + 1
             r = len(nums) - 1
@@ -60,9 +59,9 @@ class Lists(object):
                     r -= 1
                 else:
                     res.append([nums[i], nums[l], nums[r]])
-                    while l < r and nums[l] == nums[l+1]:
+                    while l < r and nums[l] == nums[l + 1]:
                         l += 1
-                    while l < r and nums[r] == nums[r-1]:
+                    while l < r and nums[r] == nums[r - 1]:
                         r -= 1
                     l += 1
                     r -= 1
@@ -170,16 +169,16 @@ class Lists(object):
         '''
         nums.sort()
         result = []
-        for i in xrange(len(nums)-3):
+        for i in xrange(len(nums) - 3):
             if nums[i] > target / 4.0:
                 break
-            if i > 0 and nums[i] == nums[i-1]:
+            if i > 0 and nums[i] == nums[i - 1]:
                 continue
             target2 = target - nums[i]
-            for j in xrange(i+1, len(nums)-2):
+            for j in xrange(i + 1, len(nums) - 2):
                 if nums[j] > target2 / 3.0:
                     break
-                if j > i+1 and nums[j] == nums[j-1]:
+                if j > i + 1 and nums[j] == nums[j - 1]:
                     continue
                 l = j + 1
                 r = len(nums) - 1
@@ -193,9 +192,9 @@ class Lists(object):
                     sum_lr = nums[l] + nums[r]
                     if sum_lr == target3:
                         result.append([nums[i], nums[j], nums[l], nums[r]])
-                        while l < r and nums[l] == nums[l+1]:
+                        while l < r and nums[l] == nums[l + 1]:
                             l += 1
-                        while l < r and nums[r] == nums[r-1]:
+                        while l < r and nums[r] == nums[r - 1]:
                             r -= 1
                         l += 1
                         r -= 1
@@ -274,12 +273,13 @@ class Lists(object):
         :type target: int
         :rtype: int
         """
+
         def search(list_num, start, end):
             if not nums:
                 return start
             mid = (start + end) / 2
             if start == end:
-                return start+1 if nums[start] < target else start
+                return start + 1 if nums[start] < target else start
             if start + 1 == end:
                 if target <= nums[start]:
                     return start
@@ -290,10 +290,11 @@ class Lists(object):
             if nums[mid] == target:
                 return mid
             if nums[mid] < target:
-                return search(list_num[mid+1:end+1], mid, end)
+                return search(list_num[mid + 1:end + 1], mid, end)
             if nums[mid] > target:
                 return search(list_num[start:mid], start, mid)
-        return search(nums, 0, len(nums)-1)
+
+        return search(nums, 0, len(nums) - 1)
 
     def nextPermutation(self, nums):
         """
@@ -309,15 +310,15 @@ class Lists(object):
         :type nums: List[int]
         :rtype: void Do not return anything, modify nums in-place instead.
         """
-        for i in xrange(len(nums)-1, -1, -1):
+        for i in xrange(len(nums) - 1, -1, -1):
             if i == 0:  # meaning the list is at maximum permutation
                 nums[:] = nums[::-1]
                 return
-            if nums[i-1] < nums[i]:
+            if nums[i - 1] < nums[i]:
                 # search from rightmost to find the first one larger than nums[i-1]
-                for k in xrange(len(nums)-1, i-1, -1):
-                    if nums[k] > nums[i-1]:
-                        nums[i-1], nums[k] = nums[k], nums[i-1]
+                for k in xrange(len(nums) - 1, i - 1, -1):
+                    if nums[k] > nums[i - 1]:
+                        nums[i - 1], nums[k] = nums[k], nums[i - 1]
                         break
                 # reverse from i
                 nums[i:] = nums[i:][::-1]
@@ -357,7 +358,7 @@ class Lists(object):
                 if nums[mid] <= target <= nums[right]:
                     left = mid + 1
                 else:
-                    right = mid -1
+                    right = mid - 1
         return -1
 
     def searchRange(self, nums, target):
@@ -429,17 +430,17 @@ class Lists(object):
             for j in xrange(len(board[0])):
                 if j not in col_dict:
                     col_dict[j] = set()
-                if (i/3, j/3) not in cube_dict:
-                    cube_dict[(i/3, j/3)] = set()
+                if (i / 3, j / 3) not in cube_dict:
+                    cube_dict[(i / 3, j / 3)] = set()
 
                 if board[i][j] == '.':
                     continue
                 if board[i][j] in row_dict[i] or board[i][j] in col_dict[j] \
-                        or board[i][j] in cube_dict[(i/3, j/3)]:
+                        or board[i][j] in cube_dict[(i / 3, j / 3)]:
                     return False
                 row_dict[i].add(board[i][j])
                 col_dict[j].add(board[i][j])
-                cube_dict[(i/3, j/3)].add(board[i][j])
+                cube_dict[(i / 3, j / 3)].add(board[i][j])
         return True
 
     def combinationSum(self, candidates, target):
@@ -453,6 +454,7 @@ class Lists(object):
         :type target: int
         :rtype: List[List[int]]
         """
+
         def dfs(nums, target, index, path, res):
             if target < 0:
                 return
@@ -460,7 +462,8 @@ class Lists(object):
                 res.append(path)
                 return
             for i in xrange(index, len(nums)):
-                dfs(nums, target-nums[i], i, path+[nums[i]], res)
+                dfs(nums, target - nums[i], i, path + [nums[i]], res)
+
         res = []
         candidates.sort()
         dfs(candidates, target, 0, [], res)
@@ -488,6 +491,7 @@ class Lists(object):
                 if i != index and nums[i] == nums[i - 1]:
                     continue
                 dfs(nums, target - nums[i], i + 1, path + [nums[i]], res)
+
         res = []
         candidates.sort()
         dfs(candidates, target, 0, [], res)
@@ -501,12 +505,14 @@ class Lists(object):
         :type nums: List[int]
         :rtype: List[List[int]]
         """
+
         def dfs(n, path, ans):
             if not n:
                 ans.append(path)
                 return
             for i in xrange(len(n)):
                 dfs(n[:i] + n[i + 1:], path + [n[i]], ans)
+
         res = []
         dfs(nums, [], res)
         return res
@@ -520,14 +526,16 @@ class Lists(object):
         :type nums: List[int]
         :rtype: List[List[int]]
         """
+
         def dfs(n, path, ans):
             if not n:
                 ans.append(path)
                 return
             for i in xrange(len(n)):
-                if i != 0 and n[i] == n[i-1]:
+                if i != 0 and n[i] == n[i - 1]:
                     continue
                 dfs(n[:i] + n[i + 1:], path + [n[i]], ans)
+
         nums.sort()
         res = []
         dfs(nums, [], res)
@@ -597,6 +605,28 @@ class Lists(object):
         for i in xrange(1, len(nums)):
             nums[i] = max(nums[i - 1] + nums[i], nums[i])
         return max(nums)
+
+    def spiralOrder(self, matrix):
+        """
+        # 54. Spiral Matrix
+
+        Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
+
+        For example,
+        Given the following matrix:
+
+        [
+         [ 1, 2, 3 ],
+         [ 4, 5, 6 ],
+         [ 7, 8, 9 ]
+        ]
+        You should return [1,2,3,6,9,8,7,4,5].
+
+        :type matrix: List[List[int]]
+        :rtype: List[int]
+        """
+        '''处理graph的要诀就是颠倒变换至便于操作的位置。参考#48的"取巧"解法'''
+        return matrix and list(matrix.pop(0)) + self.spiralOrder(zip(*matrix)[::-1])
 
 
 if __name__ == '__main__':

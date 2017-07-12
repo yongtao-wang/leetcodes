@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 class Numbers(object):
-
     def reverse(self, x):
         """
         # 7

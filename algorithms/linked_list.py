@@ -8,7 +8,6 @@ class ListNode(object):
 
 
 class LinkedList(object):
-
     def addTwoNumbers(self, l1, l2):
         """
         # 2
