@@ -1,4 +1,10 @@
 # -*- coding: utf-8 -*-
+class Interval(object):
+    def __init__(self, s=0, e=0):
+        self.start = s
+        self.end = e
+
+
 class Lists(object):
     def twoSum(self, nums, target):
         """
@@ -628,8 +634,65 @@ class Lists(object):
         '''处理graph的要诀就是颠倒变换至便于操作的位置。参考#48的"取巧"解法'''
         return matrix and list(matrix.pop(0)) + self.spiralOrder(zip(*matrix)[::-1])
 
+    def merge(self, intervals):
+        """
+        56. Merge Intervals
+
+        Given a collection of intervals, merge all overlapping intervals.
+
+        For example,
+        Given [1,3],[2,6],[8,10],[15,18],
+        return [1,6],[8,10],[15,18].
+
+        :type intervals: List[Interval]
+        :rtype: List[Interval]
+        """
+        '''对于sorted有了新的认识'''
+
+        merged = []
+        for i in sorted(intervals, key=lambda k: k.start):
+            if merged and i.start <= merged[-1].end:
+                merged[-1].end = max(merged[-1].end, i.end)
+            else:
+                merged.append(i)
+        return merged
+
+    # noinspection PyTypeChecker
+    def generateMatrix(self, n):
+        """
+        59. Spiral Matrix II
+        Given an integer n, generate a square matrix filled with elements from 1 to n2 in spiral order.
+
+        For example,
+        Given n = 3,
+        You should return the following matrix:
+        [
+         [ 1, 2, 3 ],
+         [ 8, 9, 4 ],
+         [ 7, 6, 5 ]
+        ]
+
+        :type n: int
+        :rtype: List[List[int]]
+        """
+        '''
+        临场能写出
+        def generateMatrix(self, n):
+            A = [[n*n]]
+            while A[0][0] > 1:
+                A = [range(A[0][0] - len(A), A[0][0])] + zip(*A[::-1])
+            return A * (n>0)
+        就相当了不起了
+        '''
+        matrix = []
+        s = n * n + 1  # make it starting from 1 rather than 0
+        while s > 1:
+            s, e = s - len(matrix), s
+            matrix = [range(s, e)] + zip(*matrix[::-1])
+        return matrix  # spiral counter clockwise return zip(*matrix)
+
 
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.groupAnagrams(["eat", "tea", "tan", "ate", "nat", "bat"])
+    print l.generateMatrix(3)

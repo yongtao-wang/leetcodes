@@ -244,10 +244,30 @@ class Run(unittest.TestCase):
         ]
         self.assertEqual(self.lp.spiralOrder(matrix), [1, 2, 3, 6, 9, 8, 7, 4, 5])
 
-    def test_jump_game(self):
+    def test_jump_game_leet55(self):
         self.assertTrue(self.dp.canJump([0]))
         self.assertTrue(self.dp.canJump([3, 2, 1, 1, 4]))
         self.assertFalse(self.dp.canJump([3, 2, 1, 0, 4]))
+
+    def test_merge_intervals_leet56(self):
+        intervals = [lp.Interval(1, 3), lp.Interval(2, 6),lp.Interval(9, 10),
+                     lp.Interval(8, 10), lp.Interval(15, 18), lp.Interval(3, 5)]
+        merged = self.lp.merge(intervals)
+        answer = [lp.Interval(1, 6), lp.Interval(8, 10), lp.Interval(15, 18)]
+        self.assertEqual(sorted([i.start for i in merged]), sorted([i.start for i in answer]))
+        self.assertEqual(sorted([i.end for i in merged]), sorted([i.end for i in answer]))
+
+    def test_length_of_last_word_leet58(self):
+        self.assertEqual(self.s_op.lengthOfLastWord('abc'), 3)
+        self.assertEqual(self.s_op.lengthOfLastWord('abc ss '), 2)
+
+    def test_spiral_matrix_leet59(self):
+        matrix = [
+         [ 1, 2, 3 ],
+         [ 8, 9, 4 ],
+         [ 7, 6, 5 ]
+        ]
+        self.assertEqual([list(i) for i in self.lp.generateMatrix(3)], matrix)
 
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
