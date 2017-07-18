@@ -691,6 +691,44 @@ class Lists(object):
             matrix = [range(s, e)] + zip(*matrix[::-1])
         return matrix  # spiral counter clockwise return zip(*matrix)
 
+    def getPermutation(self, n, k):
+        """
+        60. Permutation Sequence
+
+        The set [1,2,3,…,n] contains a total of n! unique permutations.
+
+        By listing and labeling all of the permutations in order,
+        We get the following sequence (ie, for n = 3):
+
+        "123"
+        "132"
+        "213"
+        "231"
+        "312"
+        "321"
+        Given n and k, return the kth permutation sequence.
+
+        Note: Given n will be between 1 and 9 inclusive.
+        :type n: int
+        :type k: int
+        :rtype: str
+        """
+        '''注意，以下解法是在一定有解的前提下。
+        如果不可解（比如n=1, k=2）则在判断nums[c]时加入些条件即可'''
+        res = []
+        nums = [i for i in xrange(1, n + 1)]
+        f = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
+        while n > 0:
+            c, k = k / f[n-1], k % f[n-1]
+            if k > 0:
+                res.append(str(nums[c]))
+                nums.remove(nums[c])
+            else:
+                res.append(str(nums[c-1]))
+                nums.remove(nums[c-1])
+            n -= 1
+        return ''.join(res)
+
 
 if __name__ == '__main__':
     # debug template

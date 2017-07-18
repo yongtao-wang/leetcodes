@@ -269,6 +269,10 @@ class Run(unittest.TestCase):
         ]
         self.assertEqual([list(i) for i in self.lp.generateMatrix(3)], matrix)
 
+    def test_permutation_sequence_leet60(self):
+        self.assertEqual(self.lp.getPermutation(3, 5), '312')
+        self.assertEqual(self.lp.getPermutation(4, 1), '1234')
+
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
         self.assertEqual(self.dp.coinChange([2], 3), -1)
