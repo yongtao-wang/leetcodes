@@ -250,7 +250,7 @@ class Run(unittest.TestCase):
         self.assertFalse(self.dp.canJump([3, 2, 1, 0, 4]))
 
     def test_merge_intervals_leet56(self):
-        intervals = [lp.Interval(1, 3), lp.Interval(2, 6),lp.Interval(9, 10),
+        intervals = [lp.Interval(1, 3), lp.Interval(2, 6), lp.Interval(9, 10),
                      lp.Interval(8, 10), lp.Interval(15, 18), lp.Interval(3, 5)]
         merged = self.lp.merge(intervals)
         answer = [lp.Interval(1, 6), lp.Interval(8, 10), lp.Interval(15, 18)]
@@ -263,15 +263,43 @@ class Run(unittest.TestCase):
 
     def test_spiral_matrix_leet59(self):
         matrix = [
-         [ 1, 2, 3 ],
-         [ 8, 9, 4 ],
-         [ 7, 6, 5 ]
+            [1, 2, 3],
+            [8, 9, 4],
+            [7, 6, 5]
         ]
         self.assertEqual([list(i) for i in self.lp.generateMatrix(3)], matrix)
 
     def test_permutation_sequence_leet60(self):
         self.assertEqual(self.lp.getPermutation(3, 5), '312')
         self.assertEqual(self.lp.getPermutation(4, 1), '1234')
+
+    def test_rotate_list_leet61(self):
+        n1 = lk.ListNode(1)
+        n2 = lk.ListNode(2)
+        n3 = lk.ListNode(3)
+        n4 = lk.ListNode(4)
+        n5 = lk.ListNode(5)
+        n1.next = n2
+        n2.next = n3
+        n3.next = n4
+        n4.next = n5
+        head = self.link.rotateRight(n1, 3)
+        val = []
+        while head:
+            val.append(str(head.val))
+            head = head.next
+        self.assertEqual(''.join(val), '34512')
+
+    def test_unique_paths_leet62(self):
+        self.assertEqual(self.lp.uniquePaths(3, 2), 3)
+        self.assertEqual(self.lp.uniquePaths(7, 11), 8008)
+
+    def test_unique_paths_II_leet63(self):
+        obs = [[0, 0, 0], [0, 1, 0], [0, 0, 0]]
+        self.assertEqual(self.lp.uniquePathsWithObstacles(obs), 2)
+
+    def test_minimum_path_sum_leet64(self):
+        self.assertEqual(self.lp.minPathSum([[1,2],[5,6],[1,1]]), 8)
 
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)

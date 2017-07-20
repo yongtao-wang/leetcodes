@@ -719,18 +719,119 @@ class Lists(object):
         nums = [i for i in xrange(1, n + 1)]
         f = [1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880]
         while n > 0:
-            c, k = k / f[n-1], k % f[n-1]
+            c, k = k / f[n - 1], k % f[n - 1]
             if k > 0:
                 res.append(str(nums[c]))
                 nums.remove(nums[c])
             else:
-                res.append(str(nums[c-1]))
-                nums.remove(nums[c-1])
+                res.append(str(nums[c - 1]))
+                nums.remove(nums[c - 1])
             n -= 1
         return ''.join(res)
+
+    def uniquePaths(self, m, n):
+        """
+        62. Unique Paths
+        A robot is located at the top-left corner of a m x n grid
+        (marked 'Start' in the diagram below).
+
+        The robot can only move either down or right at any point in time.
+        The robot is trying to reach the bottom-right corner of the grid
+        (marked 'Finish' in the diagram below).
+
+        How many possible unique paths are there?
+
+        :type m: int
+        :type n: int
+        :rtype: int
+        """
+        matrix = [[0] * m for _ in xrange(n)]
+        for i in xrange(n):
+            for j in xrange(m):
+                if j == 0 or i == 0:
+                    matrix[i][j] = 1
+                else:
+                    matrix[i][j] = matrix[i - 1][j] + matrix[i][j - 1]
+        return matrix[n - 1][m - 1]
+
+    def uniquePathsWithObstacles(self, obstacleGrid):
+        """
+        63. Unique Paths II
+        Follow up for "Unique Paths":
+
+        Now consider if some obstacles are added to the grids. How many unique paths would there be?
+
+        An obstacle and empty space is marked as 1 and 0 respectively in the grid.
+
+        For example,
+        There is one obstacle in the middle of a 3x3 grid as illustrated below.
+
+        [
+          [0,0,0],
+          [0,1,0],
+          [0,0,0]
+        ]
+        The total number of unique paths is 2.
+
+        :type obstacleGrid: List[List[int]]
+        :rtype: int
+        """
+        m = len(obstacleGrid)
+        n = 0
+        if m > 0:
+            n = len(obstacleGrid[0])
+        matrix = [[0] * n for _ in range(m)]
+        for i in xrange(m):
+            for j in xrange(n):
+                if i == 0 and j == 0:
+                    matrix[i][j] = 1 if obstacleGrid[i][j] == 0 else 0
+                if obstacleGrid[i][j] == 1:
+                    continue
+                if i == 0 and j > 0 and obstacleGrid[i][j - 1] == 0:
+                    matrix[i][j] = matrix[i][j - 1]
+                    continue
+                elif j == 0 and i > 0 and obstacleGrid[i - 1][j] == 0:
+                    matrix[i][j] = matrix[i - 1][j]
+                    continue
+                if i > 0 and j > 0 and obstacleGrid[i - 1][j] == 0:
+                    matrix[i][j] += matrix[i - 1][j]
+                if i > 0 and j > 0 and obstacleGrid[i][j - 1] == 0:
+                    matrix[i][j] += matrix[i][j - 1]
+        return matrix[m - 1][n - 1]
+
+    def minPathSum(self, grid):
+        """
+        64. Minimum Path Sum
+
+        Given a m x n grid filled with non-negative numbers,
+        find a path from top left to bottom right which minimizes
+        the sum of all numbers along its path.
+
+        Note: You can only move either down or right at any point in time.
+        :type grid: List[List[int]]
+        :rtype: int
+        """
+        m = len(grid)
+        n = 0
+        if m > 0:
+            n = len(grid[0])
+        matrix = [[0] * n for _ in xrange(m)]
+        for i in xrange(m):
+            for j in xrange(n):
+                if i == j == 0:
+                    matrix[i][j] = grid[i][j]
+                    continue
+                if i == 0 and j > 0:
+                    matrix[i][j] = grid[i][j] + matrix[i][j - 1]
+                    continue
+                elif j == 0 and i > 0:
+                    matrix[i][j] = grid[i][j] + matrix[i - 1][j]
+                    continue
+                matrix[i][j] = grid[i][j] + min(matrix[i - 1][j], matrix[i][j - 1])
+        return matrix[m - 1][n - 1]
 
 
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.generateMatrix(3)
+    print l.minPathSum([[1,2],[5,6],[1,1]])

@@ -164,6 +164,40 @@ class LinkedList(object):
             head = head.next.next
         return res.next
 
+    def rotateRight(self, head, k):
+        """
+        61. Rotate List
+        Given a list, rotate the list to the right by k places, where k is non-negative.
+
+        For example:
+        Given 1->2->3->4->5->NULL and k = 2,
+        return 4->5->1->2->3->NULL.
+        :type head: ListNode
+        :type k: int
+        :rtype: ListNode
+        """
+        length = 0
+        h = head
+        while h:
+            length += 1
+            h = h.next
+        if length == 0:
+            return
+        k = k % length
+        start = head
+        end = head
+        for _ in xrange(k):
+            end = end.next
+        while end.next:
+            start = start.next
+            end = end.next
+        end.next = head
+        while head != start:
+            head = head.next
+        res = start.next
+        head.next = None
+        return res
+
 
 if __name__ == '__main__':
     # debug template
