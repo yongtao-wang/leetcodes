@@ -328,11 +328,16 @@ class Run(unittest.TestCase):
         self.assertEqual(matrix, answer)
 
     def test_search_2d_matrix_leet74(self):
-        matrix = [[1,3,5,7],[10,11,16,20],[23,30,34,50]]
+        matrix = [[1, 3, 5, 7], [10, 11, 16, 20], [23, 30, 34, 50]]
         self.assertTrue(self.lst.searchMatrix(matrix, 1))
         self.assertTrue(self.lst.searchMatrix(matrix, 3))
         self.assertTrue(self.lst.searchMatrix(matrix, 50))
         self.assertFalse(self.lst.searchMatrix(matrix, 21))
+
+    def test_sort_colors_leet75(self):
+        colors = [2, 1, 2, 0, 0]
+        self.lst.sortColors(colors)
+        self.assertEqual(colors, [0, 0, 1, 2, 2])
 
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
