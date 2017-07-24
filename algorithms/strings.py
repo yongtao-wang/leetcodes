@@ -271,3 +271,43 @@ class Strings(object):
         """
         sp = s.split()
         return 0 if not sp else len(sp[-1])
+
+    def addBinary(self, a, b):
+        """
+        67. Add Binary
+        Given two binary strings, return their sum (also a binary string).
+
+        For example,
+        a = "11"
+        b = "1"
+        Return "100".
+
+        :type a: str
+        :type b: str
+        :rtype: str
+        """
+        return bin(int(a, 2) + int(b, 2))[2:]
+
+    def simplifyPath(self, path):
+        """
+        71. Simplify Path
+
+        Given an absolute path for a file (Unix-style), simplify it.
+
+        For example,
+        path = "/home/", => "/home"
+        path = "/a/./b/../../c/", => "/c"
+
+        :type path: str
+        :rtype: str
+        """
+        '''split应该是第一反应'''
+        stack = []
+        split_path = [p for p in path.split('/') if p != '.' and p != '']
+        for p in split_path:
+            if p == '..':
+                if len(stack) > 0:
+                    stack.pop()
+            else:
+                stack.append(p)
+        return '/' + '/'.join(stack)

@@ -20,7 +20,6 @@ class Numbers(object):
         """
         # 50. Pow(x, n)
         Implement pow(x, n).
-
         :type x: float
         :type n: int
         :rtype: float
@@ -35,6 +34,26 @@ class Numbers(object):
             ans *= ans
         ans *= self.myPow(x, k - index)
         return ans if n > 0 else (1.0 / ans if ans != 0 else 1.0)
+
+    def mySqrt(self, x):
+        """
+        69. Sqrt(x)
+        Implement int sqrt(int x).
+
+        Compute and return the square root of x.
+        :type x: int
+        :rtype: int
+        """
+        l = 0
+        h = x
+        while l <= h:
+            mid = (l + h) / 2
+            if mid ** 2 <= x < (mid + 1) ** 2:
+                return mid
+            elif mid ** 2 > x:
+                h = mid
+            else:
+                l = mid + 1
 
 
 if __name__ == '__main__':

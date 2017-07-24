@@ -830,8 +830,132 @@ class Lists(object):
                 matrix[i][j] = grid[i][j] + min(matrix[i - 1][j], matrix[i][j - 1])
         return matrix[m - 1][n - 1]
 
+    def plusOne(self, digits):
+        """
+        66. Plus One
+
+        Given a non-negative integer represented as a non-empty array of digits,
+        plus one to the integer.
+
+        You may assume the integer do not contain any leading zero,
+        except the number 0 itself.
+
+        The digits are stored such that the most significant digit is
+        at the head of the list.
+        :type digits: List[int]
+        :rtype: List[int]
+        """
+        '''没有转换为integer是为避免溢出'''
+        reverse_digits = digits[::-1]
+        reverse_digits[0] += 1
+        for i in xrange(len(digits) - 1):
+            if reverse_digits[i] > 9:
+                reverse_digits[i] -= 10
+                reverse_digits[i + 1] += 1
+        if reverse_digits[-1] > 9:
+            reverse_digits[-1] -= 10
+            reverse_digits.append(1)
+        return reverse_digits[::-1]
+
+    def climbStairs(self, n):
+        """
+        70. Climbing Stairs
+        You are climbing a stair case. It takes n steps to reach to the top.
+
+        Each time you can either climb 1 or 2 steps.
+        In how many distinct ways can you climb to the top?
+        :type n: int
+        :rtype: int
+        """
+        climb = {}
+        climb[1] = 1
+        climb[2] = 2
+        for i in xrange(3, n + 1):
+            climb[i] = climb[i - 1] + climb[i - 2]
+        return climb[n]
+
+    def setZeroes(self, matrix):
+        """
+        73. Set Matrix Zeroes
+        Given a m x n matrix, if an element is 0,
+        set its entire row and column to 0. Do it in place.
+
+        :type matrix: List[List[int]]
+        :rtype: void Do not return anything, modify matrix in-place instead.
+        """
+        m = len(matrix)
+        if m == 0:
+            return
+        n = len(matrix[0])
+        n_zero = False
+        m_zero = False
+
+        if 0 in matrix[0]:
+            n_zero = True
+        for line in matrix:
+            if line[0] == 0:
+                m_zero = True
+                break
+
+        for i in xrange(1, m):
+            for j in xrange(1, n):
+                if matrix[i][j] == 0:
+                    matrix[0][j] = 0
+                    matrix[i][0] = 0
+        for i in xrange(1, m):
+            if matrix[i][0] == 0:
+                matrix[i] = [0] * n
+        for j in xrange(1, n):
+            if matrix[0][j] == 0:
+                for k in xrange(m):
+                    matrix[k][j] = 0
+        if n_zero:
+            matrix[0] = [0] * n
+        if m_zero:
+            for line in matrix:
+                line[0] = 0
+
+    def searchMatrix(self, matrix, target):
+        """
+        74. Search a 2D Matrix
+        Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+
+        Integers in each row are sorted from left to right.
+        The first integer of each row is greater than the last integer of the previous row.
+        For example,
+
+        Consider the following matrix:
+
+        [
+          [1,   3,  5,  7],
+          [10, 11, 16, 20],
+          [23, 30, 34, 50]
+        ]
+        Given target = 3, return true.
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        if not matrix or not matrix[0]:
+            return False
+        line = None
+        l = 0
+        r = len(matrix) - 1
+        while l <= r:
+            mid = (l + r) / 2
+            if target < matrix[l][0] or target > matrix[r][-1]:
+                return False
+            if matrix[mid][0] <= target <= matrix[mid][-1]:
+                line = matrix[mid]
+                break
+            elif target > matrix[mid][-1]:
+                l = mid + 1
+            else:
+                r = mid - 1
+        return target in line
+
 
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.minPathSum([[1,2],[5,6],[1,1]])
+    print l.setZeroes([[0,0,0,5],[4,3,1,4],[0,1,1,4],[1,2,1,3],[0,0,1,1]])
