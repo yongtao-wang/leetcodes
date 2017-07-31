@@ -995,8 +995,62 @@ class Lists(object):
                 nums[i], nums[p2] = nums[p2], nums[i]
                 p2 += 1
 
+    def combine(self, n, k):
+        """
+        77. Combinations
+        Given two integers n and k, return all possible combinations of k numbers out of 1 ... n.
+
+        For example,
+        If n = 4 and k = 2, a solution is:
+
+        [
+          [2,4],
+          [3,4],
+          [2,3],
+          [1,2],
+          [1,3],
+          [1,4],
+        ]
+        :type n: int
+        :type k: int
+        :rtype: List[List[int]]
+        """
+        '''
+        THERE IS A FORMULA OF
+            C(n, k) = C(n - 1, k - 1) + C(n - 1, k)
+        the following solution takes its idea.
+        time for some high school maths
+        -------------------------------------------
+        if k == 1:
+            return [[i] for i in range(1, n + 1)]
+        elif k == n:
+            return [[i for i in range(1, n + 1)]]
+        else:
+            rs = []
+            rs += self.combine(n - 1, k)
+            part = self.combine(n - 1, k - 1)
+            for ls in part:
+                ls.append(n)
+            rs += part
+            return rs
+        ------------------------------------------
+        DFS itself is a little bit slow for this question
+        '''
+        def dfs(nums, c, index, path, res):
+            if c == 0:
+                res.append(path)
+                return
+            if len(nums[index:]) < c:
+                return
+            for i in xrange(index, len(nums)):
+                dfs(nums, c - 1, i + 1, path + [nums[i]], res)
+
+        result = []
+        dfs(list(xrange(1, n + 1)), k, 0, [], result)
+        return result
+
 
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.sortColors([2, 1, 0, 1, 0, 2, 0])
+    print l.combine(5, 3)

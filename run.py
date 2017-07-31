@@ -339,6 +339,11 @@ class Run(unittest.TestCase):
         self.lst.sortColors(colors)
         self.assertEqual(colors, [0, 0, 1, 2, 2])
 
+    def test_combinations_leet77(self):
+        ans = [[1, 2, 3], [1, 2, 4], [1, 2, 5], [1, 3, 4], [1, 3, 5],
+               [1, 4, 5], [2, 3, 4], [2, 3, 5], [2, 4, 5], [3, 4, 5]]
+        self.assertEqual(sorted(self.lst.combine(5, 3)), sorted(ans))
+
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
         self.assertEqual(self.dp.coinChange([2], 3), -1)
