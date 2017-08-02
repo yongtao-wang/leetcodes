@@ -1036,6 +1036,7 @@ class Lists(object):
         ------------------------------------------
         DFS itself is a little bit slow for this question
         '''
+
         def dfs(nums, c, index, path, res):
             if c == 0:
                 res.append(path)
@@ -1049,8 +1050,45 @@ class Lists(object):
         dfs(list(xrange(1, n + 1)), k, 0, [], result)
         return result
 
+    def subsets(self, nums):
+        """
+        78. Subsets
+        Given a set of distinct integers, nums, return all possible subsets.
+
+        Note: The solution set must not contain duplicate subsets.
+
+        For example,
+        If nums = [1,2,3], a solution is:
+
+        [
+          [3],
+          [1],
+          [2],
+          [1,2,3],
+          [1,3],
+          [2,3],
+          [1,2],
+          []
+        ]
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        '''
+        def dfs(numbers, start, path, res):
+            res.append(path)
+            for i in xrange(start, len(numbers)):
+                dfs(numbers, i + 1, path + [numbers[i]], res)
+        result = []
+        dfs(sorted(nums), 0, [], result)
+        return result
+        '''
+        res = [[]]
+        for n in sorted(nums):
+            res += [r + [n] for r in res]
+        return res
+
 
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.combine(5, 3)
+    print l.subsets([5, 3, 1, 2, 4])

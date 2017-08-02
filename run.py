@@ -344,6 +344,10 @@ class Run(unittest.TestCase):
                [1, 4, 5], [2, 3, 4], [2, 3, 5], [2, 4, 5], [3, 4, 5]]
         self.assertEqual(sorted(self.lst.combine(5, 3)), sorted(ans))
 
+    def test_subset_leet78(self):
+        ans = [[], [3], [2], [2, 3], [1], [1, 3], [1, 2], [1, 2, 3]]
+        self.assertEqual(sorted(ans), sorted(self.lst.subsets([1, 2, 3])))
+
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
         self.assertEqual(self.dp.coinChange([2], 3), -1)
