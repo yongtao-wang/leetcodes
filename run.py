@@ -348,6 +348,9 @@ class Run(unittest.TestCase):
         ans = [[], [3], [2], [2, 3], [1], [1, 3], [1, 2], [1, 2, 3]]
         self.assertEqual(sorted(ans), sorted(self.lst.subsets([1, 2, 3])))
 
+    def test_longest_consecutive_leet128(self):
+        self.assertEqual(self.lst.longestConsecutive([100, 4, 200, 1, 3, 2]), 4)
+
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
         self.assertEqual(self.dp.coinChange([2], 3), -1)
