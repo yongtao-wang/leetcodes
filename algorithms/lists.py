@@ -1087,6 +1087,30 @@ class Lists(object):
             res += [r + [n] for r in res]
         return res
 
+    def longestConsecutive(self, nums):
+        """
+        128. Longest Consecutive Sequence
+
+        Given an unsorted array of integers, find the length of the longest consecutive elements sequence.
+
+        For example,
+        Given [100, 4, 200, 1, 3, 2],
+        The longest consecutive elements sequence is [1, 2, 3, 4]. Return its length: 4.
+
+        Your algorithm should run in O(n) complexity.
+        :type nums: List[int]
+        :rtype: int
+        """
+        s = set(nums)
+        longest = 0
+        for n in nums:
+            if n - 1 not in s:
+                end = n + 1
+                while end in s:
+                    end += 1
+                longest = max(longest, end - n)
+        return longest
+
 
 if __name__ == '__main__':
     # debug template
