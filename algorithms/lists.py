@@ -330,6 +330,39 @@ class Lists(object):
                 nums[i:] = nums[i:][::-1]
                 return
 
+    def longestValidParentheses(self, s):
+        """
+        32. Longest Valid Parentheses
+        Given a string containing just the characters '(' and ')',
+        find the length of the longest valid (well-formed) parentheses substring.
+
+        For "(()", the longest valid parentheses substring is "()",
+        which has length = 2.
+
+        Another example is ")()())", where the longest valid parentheses substring is "()()",
+        which has length = 4.
+        :type s: str
+        :rtype: int
+        """
+        stack = []
+        matched = [0] * len(s)
+        longest = 0
+        for i in xrange(len(s)):
+            if s[i] == '(':
+                stack.append(i)
+            elif stack:
+                j = stack.pop(-1)
+                matched[i], matched[j] = 1, 1
+        count = 0
+        for k in xrange(len(matched)):
+            if matched[k] == 1:
+                count += 1
+            else:
+                longest = max(longest, count)
+                count = 0
+        longest = max(longest, count)
+        return longest
+
     def search(self, nums, target):
         """
         33. Search in Rotated Sorted Array
@@ -1150,4 +1183,4 @@ class Lists(object):
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.subsets([5, 3, 1, 2, 4])
+    print l.longestValidParentheses('()')

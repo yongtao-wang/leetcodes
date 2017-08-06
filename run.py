@@ -165,6 +165,12 @@ class Run(unittest.TestCase):
         self.assertEqual(l3, [1, 3, 5])
         self.assertEqual(l4, [3, 1, 2, 5])
 
+    def test_longest_valid_parenthesis_leet32(self):
+        self.assertEqual(self.lst.longestValidParentheses('()'), 2)
+        self.assertEqual(self.lst.longestValidParentheses('()(('), 2)
+        self.assertEqual(self.lst.longestValidParentheses('()(()'), 2)
+        self.assertEqual(self.lst.longestValidParentheses('()(())()'), 8)
+
     def test_search_in_rotated_sorted_array_leet33(self):
         l1 = []
         l2 = [4, 5, 6, 7, 0, 1, 2]
