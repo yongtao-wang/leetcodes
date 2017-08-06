@@ -1111,6 +1111,41 @@ class Lists(object):
                 longest = max(longest, end - n)
         return longest
 
+    def findKthLargest(self, nums, k):
+        """
+        215. Kth Largest Element in an Array
+        Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+        For example,
+        Given [3,2,1,5,6,4] and k = 2, return 5.
+
+        Note:
+        You may assume k is always valid, 1 ? k ? array's length.
+        :type nums: List[int]
+        :type k: int
+        :rtype: int
+        """
+
+        def partition(numbers, low, high):
+            check, pivot = low, numbers[high]
+            for i in xrange(low, high):
+                if numbers[i] <= pivot:
+                    numbers[check], numbers[i] = numbers[i], numbers[check]
+                    check += 1
+            numbers[check], numbers[high] = numbers[high], numbers[check]
+            return check
+
+        l, h = 0, len(nums) - 1
+        k = len(nums) - k
+        while True:
+            index = partition(nums, l, h)
+            if index == k:
+                return nums[index]
+            elif index > k:
+                h = index - 1
+            else:
+                l = index + 1
+
 
 if __name__ == '__main__':
     # debug template

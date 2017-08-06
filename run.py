@@ -351,6 +351,9 @@ class Run(unittest.TestCase):
     def test_longest_consecutive_leet128(self):
         self.assertEqual(self.lst.longestConsecutive([100, 4, 200, 1, 3, 2]), 4)
 
+    def test_kth_largest_element_leet215(self):
+        self.assertEqual(self.lst.findKthLargest([3, 2, 1, 5, 6, 4], 2), 5)
+
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
         self.assertEqual(self.dp.coinChange([2], 3), -1)
