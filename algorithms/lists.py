@@ -414,6 +414,39 @@ class Lists(object):
         :type target: int
         :rtype: List[int]
         """
+        '''
+        另一个concise solution. 分开算左边和右边。效率略高一些。
+        ---------------------------------------
+        def searchRange(self, nums, target):
+            """
+            :type nums: List[int]
+            :type target: int
+            :rtype: List[int]
+            """
+            
+            left, right = self.search_left(nums, target), self.search_right(nums, target)
+            return [left, right] if left <= right else [-1, -1]
+        
+        def search_left(self, nums, target):
+            left, right = 0, len(nums) - 1
+            while left <= right:
+                mid = (left + right) / 2
+                if nums[mid] < target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            return left
+        
+        def search_right(self, nums, target):
+            left, right = 0, len(nums) - 1
+            while left <= right:
+                mid = (left + right) / 2
+                if nums[mid] <= target:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            return right
+        '''
         i = 0
         j = len(nums) - 1
         ans = [-1, -1]
@@ -1120,6 +1153,28 @@ class Lists(object):
             res += [r + [n] for r in res]
         return res
 
+    def maxProfit(self, prices):
+        """
+        121. Best Time to Buy and Sell Stock
+        Say you have an array for which the ith element is the price of a given stock on day i.
+
+        If you were only permitted to complete at most one transaction
+        (ie, buy one and sell one share of the stock), design an algorithm to find
+        the maximum profit.
+        :type prices: List[int]
+        :rtype: int
+        """
+        if not prices:
+            return 0
+        min_price = prices[0]
+        max_profit = 0
+        for i in xrange(1, len(prices)):
+            current_profit = prices[i] - min_price
+            max_profit = max(current_profit, max_profit)
+            if prices[i] < min_price:
+                min_price = prices[i]
+        return max_profit
+
     def longestConsecutive(self, nums):
         """
         128. Longest Consecutive Sequence
@@ -1143,6 +1198,53 @@ class Lists(object):
                     end += 1
                 longest = max(longest, end - n)
         return longest
+
+    def numIslands(self, grid):
+        """
+        200. Number of Islands
+        Given a 2d grid map of '1's (land) and '0's (water),
+        count the number of islands. An island is surrounded by
+        water and is formed by connecting adjacent lands horizontally or vertically.
+        You may assume all four edges of the grid are all surrounded by water.
+
+        Example 1:
+
+        11110
+        11010
+        11000
+        00000
+        Answer: 1
+
+        Example 2:
+
+        11000
+        11000
+        00100
+        00011
+        Answer: 3
+
+        :type grid: List[List[str]]
+        :rtype: int
+        """
+        if not grid:
+            return 0
+
+        count = 0
+        for i in xrange(len(grid)):
+            for j in xrange(len(grid[0])):
+                if grid[i][j] == '1':
+                    self.dfs_leet200(grid, i, j)
+                    count += 1
+        return count
+
+    def dfs_leet200(self, grid, m, n):
+        if m < 0 or n < 0 or m >= len(grid) or n >= len(grid[0]) or grid[m][n] != '1':
+            return
+        grid[m] = grid[m][:n] + '$' + grid[m][n + 1:]
+        self.dfs_leet200(grid, m + 1, n)
+        self.dfs_leet200(grid, m - 1, n)
+        self.dfs_leet200(grid, m, n + 1)
+        self.dfs_leet200(grid, m, n - 1)
 
     def findKthLargest(self, nums, k):
         """
@@ -1179,8 +1281,92 @@ class Lists(object):
             else:
                 l = index + 1
 
+    def addOperators(self, num, target):
+        """
+        282. Expression Add Operators
+        Given a string that contains only digits 0-9 and a target value,
+        return all possibilities to add binary operators (not unary) +, -, or *
+        between the digits so they evaluate to the target value.
+
+        Examples:
+        "123", 6 -> ["1+2+3", "1*2*3"]
+        "232", 8 -> ["2*3+2", "2+3*2"]
+        "105", 5 -> ["1*0+5","10-5"]
+        "00", 0 -> ["0+0", "0-0", "0*0"]
+        "3456237490", 9191 -> []
+        :type num: str
+        :type target: int
+        :rtype: List[str]
+        """
+        res = []
+        for i in range(1, len(num) + 1):
+            if i == 1 or (i > 1 and num[0] != "0"):  # prevent "00*" as a number
+                self.dfs_leet282(num[i:], num[:i], int(num[:i]), int(num[:i]), target,
+                                 res)  # this step put first number in the string
+        return res
+
+    def dfs_leet282(self, num, temp, cur, last, target, res):
+        if not num:
+            if cur == target:
+                res.append(temp)
+            return
+        for i in range(1, len(num) + 1):
+            val = num[:i]
+            if i == 1 or (i > 1 and num[0] != "0"):  # prevent "00*" as a number
+                self.dfs_leet282(num[i:], temp + "+" + val, cur + int(val), int(val), target, res)
+                self.dfs_leet282(num[i:], temp + "-" + val, cur - int(val), -int(val), target, res)
+                self.dfs_leet282(num[i:], temp + "*" + val, cur - last + last * int(val), last * int(val), target, res)
+
+    def moveZeroes(self, nums):
+        """
+        283. Move Zeroes
+        Given an array nums, write a function to move all 0's to the end of it
+        while maintaining the relative order of the non-zero elements.
+
+        For example, given nums = [0, 1, 0, 3, 12], after calling your function,
+        nums should be [1, 3, 12, 0, 0].
+
+        Note:
+        You must do this in-place without making a copy of the array.
+        Minimize the total number of operations.
+
+        :type nums: List[int]
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        p, q = 0, 0
+        while q < len(nums):
+            if nums[q] != 0:
+                nums[p], nums[q] = nums[q], nums[p]
+                p += 1
+            q += 1
+
+    def numberOfBoomerangs(self, points):
+        """
+        447. Number of Boomerangs
+        Given n points in the plane that are all pairwise distinct,
+        a "boomerang" is a tuple of points (i, j, k) such that
+        the distance between i and j equals the distance between i and k
+        (the order of the tuple matters).
+
+        Find the number of boomerangs. You may assume that n will be
+        at most 500 and coordinates of points are all in the range [-10000, 10000] (inclusive).
+
+        :type points: List[List[int]]
+        :rtype: int
+        """
+        res = 0
+        for p in points:
+            h = {}
+            for q in points:
+                if p != q:
+                    dis = (p[0] - q[0]) ** 2 + (p[1] - q[1]) ** 2
+                    h[dis] = 1 + h.get(dis, 0)
+            for k in h:
+                res += h[k] * (h[k] - 1)
+        return res
+
 
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.longestValidParentheses('()')
+    print l.addOperators('232', 8)

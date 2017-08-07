@@ -55,8 +55,61 @@ class Numbers(object):
             else:
                 l = mid + 1
 
+    def convertToTitle(self, n):
+        """
+        168. Excel Sheet Column Title
+        Given a positive integer, return its corresponding column title as appear in an Excel sheet.
+
+        For example:
+
+            1 -> A
+            2 -> B
+            3 -> C
+            ...
+            26 -> Z
+            27 -> AA
+            28 -> AB
+        :type n: int
+        :rtype: str
+        """
+        '''坑爹的是，并非从0开始。所以每轮要先减一'''
+        build = ''
+        while n > 0:
+            n -= 1
+            build = chr(n % 26 + 65) + build
+            n /= 26
+        return build
+
+    def isHappy(self, n):
+        """
+        202. Happy Number
+        Write an algorithm to determine if a number is "happy".
+
+        A happy number is a number defined by the following process:
+        Starting with any positive integer, replace the number by the sum of
+        the squares of its digits, and repeat the process until the number equals 1
+        (where it will stay), or it loops endlessly in a cycle which does not include 1.
+        Those numbers for which this process ends in 1 are happy numbers.
+
+        :type n: int
+        :rtype: bool
+        """
+        nums = [i for i in str(n)]
+        dict = set()
+        while True:
+            next_sum = 0
+            for d in nums:
+                next_sum += int(d) ** 2
+            if next_sum == 1:
+                return True
+            elif next_sum in dict:
+                return False
+            else:
+                dict.add(next_sum)
+                nums = [i for i in str(next_sum)]
+
 
 if __name__ == '__main__':
     # debug template
     n = Numbers()
-    print n.myPow(2.0, -2147483648)
+    print n.isHappy(4)

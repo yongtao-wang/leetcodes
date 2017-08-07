@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+
 # Definition for singly-linked list.
 class ListNode(object):
     def __init__(self, x):
@@ -197,6 +198,21 @@ class LinkedList(object):
         res = start.next
         head.next = None
         return res
+
+    def reverseList(self, head):
+        """
+        206. Reverse Linked List
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        switch = head
+        follow = None
+        while switch:
+            switch = head.next
+            head.next = follow
+            follow = head
+            head = switch
+        return follow
 
 
 if __name__ == '__main__':

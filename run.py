@@ -354,15 +354,47 @@ class Run(unittest.TestCase):
         ans = [[], [3], [2], [2, 3], [1], [1, 3], [1, 2], [1, 2, 3]]
         self.assertEqual(sorted(ans), sorted(self.lst.subsets([1, 2, 3])))
 
+    def test_best_time_to_buy_and_sell_stocks_leet121(self):
+        self.assertEqual(self.lst.maxProfit([7, 1, 5, 3, 6, 4]), 5)
+        self.assertEqual(self.lst.maxProfit([7, 6, 4, 3, 1]), 0)
+
     def test_longest_consecutive_leet128(self):
         self.assertEqual(self.lst.longestConsecutive([100, 4, 200, 1, 3, 2]), 4)
+
+    def test_excel_sheet_column_title_leet168(self):
+        self.assertEqual(self.num.convertToTitle(1), 'A')
+        self.assertEqual(self.num.convertToTitle(26), 'Z')
+        self.assertEqual(self.num.convertToTitle(27), 'AA')
+        self.assertEqual(self.num.convertToTitle(52), 'AZ')
+        self.assertEqual(self.num.convertToTitle(231894), 'MDZZ')
+
+    def test_number_of_islands_leet200(self):
+        map1 = ["11110", "11010", "11000", "00000"]
+        self.assertEqual(self.lst.numIslands(map1), 1)
+
+    def test_happy_number_leet202(self):
+        self.assertTrue(self.num.isHappy(7))
+        self.assertFalse(self.num.isHappy(4))
 
     def test_kth_largest_element_leet215(self):
         self.assertEqual(self.lst.findKthLargest([3, 2, 1, 5, 6, 4], 2), 5)
 
+    def test_add_operators_leet282(self):
+        self.assertEqual(sorted(self.lst.addOperators('123', 6)), sorted(["1+2+3", "1*2*3"]))
+        self.assertEqual(sorted(self.lst.addOperators('232', 8)), sorted(["2*3+2", "2+3*2"]))
+        self.assertEqual(sorted(self.lst.addOperators('105', 5)), sorted(["1*0+5", "10-5"]))
+
+    def test_move_zero_leet283(self):
+        l = [0, 1, 0, 3, 12]
+        self.lst.moveZeroes(l)
+        self.assertEqual(l, [1, 3, 12, 0, 0])
+
     def test_coin_change_leet322(self):
         self.assertEqual(self.dp.coinChange([1, 2, 5], 11), 3)
         self.assertEqual(self.dp.coinChange([2], 3), -1)
+
+    def test_number_of_boomerangs_leet447(self):
+        self.assertEqual(self.lst.numberOfBoomerangs([[0, 0], [1, 0], [2, 0]]), 2)
 
 
 if __name__ == '__main__':
