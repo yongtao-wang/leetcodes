@@ -316,6 +316,11 @@ class Run(unittest.TestCase):
         self.assertEqual(self.str.addBinary('10010', '11011'), '101101')
         self.assertEqual(self.str.addBinary('111', '1'), '1000')
 
+    def test_text_justification_leet68(self):
+        words = ["This", "is", "an", "example", "of", "text", "justification."]
+        justified = ['This    is    an', 'example  of text', 'justification.  ']
+        self.assertEqual(self.lst.fullJustify(words, 16), justified)
+
     def test_sqrt_leet69(self):
         self.assertEqual(self.num.mySqrt(33), 5)
 
