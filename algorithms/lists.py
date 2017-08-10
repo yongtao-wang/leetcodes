@@ -977,7 +977,6 @@ class Lists(object):
         res[-1] = ' '.join(res[-1].split()).ljust(maxWidth)
         return res
 
-
     def climbStairs(self, n):
         """
         70. Climbing Stairs
@@ -1208,6 +1207,81 @@ class Lists(object):
             res += [r + [n] for r in res]
         return res
 
+    def exist(self, board, word):
+        """
+        79. Word Search
+        Given a 2D board and a word, find if the word exists in the grid.
+
+        The word can be constructed from letters of sequentially adjacent cell,
+        where "adjacent" cells are those horizontally or vertically neighboring.
+        The same letter cell may not be used more than once.
+
+        For example,
+        Given board =
+
+        [
+          ['A','B','C','E'],
+          ['S','F','C','S'],
+          ['A','D','E','E']
+        ]
+        word = "ABCCED", -> returns true,
+        word = "SEE", -> returns true,
+        word = "ABCB", -> returns false.
+
+        :type board: List[List[str]]
+        :type word: str
+        :rtype: bool
+        """
+        if not board:
+            return False
+        visited = {}
+        for i in xrange(len(board)):
+            for j in xrange(len(board[0])):
+                if self._dfs_leet79(board, i, j, visited, word):
+                    return True
+        return False
+
+    def _dfs_leet79(self, board, i, j, visited, word):
+        if len(word) == 0:
+            return True
+        if i < 0 or j < 0 or i >= len(board) or j >= len(board[0]) or visited.get((i, j)):
+            return False
+        if board[i][j] != word[0]:
+            return False
+        visited[(i, j)] = True
+        # DO NOT RUN SEPARATELY AS WE DON'T NEED TO CALCULATE ALL OF FOUR
+        res = self._dfs_leet79(board, i - 1, j, visited, word[1:]) or \
+              self._dfs_leet79(board, i + 1, j, visited, word[1:]) or \
+              self._dfs_leet79(board, i, j - 1, visited, word[1:]) or \
+              self._dfs_leet79(board, i, j + 1, visited, word[1:])
+        visited[(i, j)] = False
+        return res
+
+    def largestRectangleArea(self, height):
+        """
+        84. Largest Rectangle in Histogram
+        Given n non-negative integers representing the histogram's bar height
+        where the width of each bar is 1, find the area of largest rectangle in the histogram.
+
+        :type heights: List[int]
+        :rtype: int
+        """
+        n = len(height)
+        if n < 2:
+            return height[0] if n else 0
+
+        height.append(0)  # guard
+        max_area = 0
+        for i in xrange(0, n):
+            if height[i] > height[i + 1]:
+                bar = height[i]
+                k = i
+                while k >= 0 and height[k] > height[i + 1]:
+                    bar = min(bar, height[k])
+                    max_area = max(max_area, bar * (i - k + 1))
+                    k -= 1
+        return max_area
+
     def maxProfit(self, prices):
         """
         121. Best Time to Buy and Sell Stock
@@ -1288,18 +1362,18 @@ class Lists(object):
         for i in xrange(len(grid)):
             for j in xrange(len(grid[0])):
                 if grid[i][j] == '1':
-                    self.dfs_leet200(grid, i, j)
+                    self._dfs_leet200(grid, i, j)
                     count += 1
         return count
 
-    def dfs_leet200(self, grid, m, n):
+    def _dfs_leet200(self, grid, m, n):
         if m < 0 or n < 0 or m >= len(grid) or n >= len(grid[0]) or grid[m][n] != '1':
             return
         grid[m] = grid[m][:n] + '$' + grid[m][n + 1:]
-        self.dfs_leet200(grid, m + 1, n)
-        self.dfs_leet200(grid, m - 1, n)
-        self.dfs_leet200(grid, m, n + 1)
-        self.dfs_leet200(grid, m, n - 1)
+        self._dfs_leet200(grid, m + 1, n)
+        self._dfs_leet200(grid, m - 1, n)
+        self._dfs_leet200(grid, m, n + 1)
+        self._dfs_leet200(grid, m, n - 1)
 
     def findKthLargest(self, nums, k):
         """
@@ -1356,11 +1430,11 @@ class Lists(object):
         res = []
         for i in range(1, len(num) + 1):
             if i == 1 or (i > 1 and num[0] != "0"):  # prevent "00*" as a number
-                self.dfs_leet282(num[i:], num[:i], int(num[:i]), int(num[:i]), target,
-                                 res)  # this step put first number in the string
+                self._dfs_leet282(num[i:], num[:i], int(num[:i]), int(num[:i]), target,
+                                  res)  # this step put first number in the string
         return res
 
-    def dfs_leet282(self, num, temp, cur, last, target, res):
+    def _dfs_leet282(self, num, temp, cur, last, target, res):
         if not num:
             if cur == target:
                 res.append(temp)
@@ -1368,9 +1442,9 @@ class Lists(object):
         for i in range(1, len(num) + 1):
             val = num[:i]
             if i == 1 or (i > 1 and num[0] != "0"):  # prevent "00*" as a number
-                self.dfs_leet282(num[i:], temp + "+" + val, cur + int(val), int(val), target, res)
-                self.dfs_leet282(num[i:], temp + "-" + val, cur - int(val), -int(val), target, res)
-                self.dfs_leet282(num[i:], temp + "*" + val, cur - last + last * int(val), last * int(val), target, res)
+                self._dfs_leet282(num[i:], temp + "+" + val, cur + int(val), int(val), target, res)
+                self._dfs_leet282(num[i:], temp + "-" + val, cur - int(val), -int(val), target, res)
+                self._dfs_leet282(num[i:], temp + "*" + val, cur - last + last * int(val), last * int(val), target, res)
 
     def moveZeroes(self, nums):
         """
@@ -1424,5 +1498,4 @@ class Lists(object):
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.fullJustify(["This", "is", "an", "example", "of", "text", "justification."]
-                        , 16)
+    print l.largestRectangleArea([5, 4, 3, 5, 4])

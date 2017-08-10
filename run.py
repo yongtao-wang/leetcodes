@@ -350,6 +350,12 @@ class Run(unittest.TestCase):
         self.lst.sortColors(colors)
         self.assertEqual(colors, [0, 0, 1, 2, 2])
 
+    def test_min_window_substring_leet76(self):
+        self.assertEqual(self.str.minWindow('ADOBECODEBANC', 'ABC'), 'BANC')
+        self.assertEqual(self.str.minWindow('ab', 'a'), 'a')
+        self.assertEqual(self.str.minWindow('ab', 'b'), 'b')
+        self.assertEqual(self.str.minWindow('ab', 'bb'), '')
+
     def test_combinations_leet77(self):
         ans = [[1, 2, 3], [1, 2, 4], [1, 2, 5], [1, 3, 4], [1, 3, 5],
                [1, 4, 5], [2, 3, 4], [2, 3, 5], [2, 4, 5], [3, 4, 5]]
@@ -358,6 +364,15 @@ class Run(unittest.TestCase):
     def test_subset_leet78(self):
         ans = [[], [3], [2], [2, 3], [1], [1, 3], [1, 2], [1, 2, 3]]
         self.assertEqual(sorted(ans), sorted(self.lst.subsets([1, 2, 3])))
+
+    def test_word_search_leet79(self):
+        self.assertTrue(self.lst.exist(["ABCE", "SFES", "ADEE"], "ABCESEEEFS"))
+        self.assertTrue(self.lst.exist(["ABCE", "SFCS", "ADEE"], "ABCCED"))
+        self.assertFalse(self.lst.exist(["ABCE", "SFES", "ADEE"], "ABCCED"))
+
+    def test_largest_rectangle_area_leet84(self):
+        self.assertEqual(self.lst.largestRectangleArea([5, 4, 3, 5, 4]), 15)
+        self.assertEqual(self.lst.largestRectangleArea([2, 1, 5, 6, 2, 3]), 10)
 
     def test_best_time_to_buy_and_sell_stocks_leet121(self):
         self.assertEqual(self.lst.maxProfit([7, 1, 5, 3, 6, 4]), 5)

@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
+
+
 class Strings(object):
     def myAtoi(self, str):
         """
@@ -311,3 +314,57 @@ class Strings(object):
             else:
                 stack.append(p)
         return '/' + '/'.join(stack)
+
+    def minWindow(self, s, t):
+        """
+        76. Minimum Window Substring
+        Given a string S and a string T, find the minimum window in S
+        which will contain all the characters in T in complexity O(n).
+
+        For example,
+        S = "ADOBECODEBANC"
+        T = "ABC"
+        Minimum window is "BANC".
+        :type s: str
+        :type t: str
+        :rtype: str
+        """
+        h = {}
+        start, end = 0, 0
+        count = len(t)
+        w_len = sys.maxint
+        min_start = 0
+
+        # prepare hash map
+        for i in t:
+            if i in h:
+                h[i] += 1
+            else:
+                h[i] = 1
+
+        while end < len(s):
+            # find a window
+            while count > 0 and end < len(s):
+                if s[end] in h:
+                    h[s[end]] -= 1
+                    if h[s[end]] >= 0:
+                        count -= 1
+                end += 1
+            # optimize current window
+            while count == 0:
+                if s[start] in h:
+                    h[s[start]] += 1
+                    if h[s[start]] > 0:
+                        count += 1
+                        if end - start < w_len:
+                            w_len = end - start
+                            min_start = start
+                start += 1
+        return s[min_start: min_start + w_len] if w_len != sys.maxint else ''
+
+
+if __name__ == '__main__':
+    ss = Strings()
+    print ss.minWindow('ADOBECODEBANC', 'ABC')
+    print ss.minWindow('ab', 'a')
+    print ss.minWindow('ab', 'b')
