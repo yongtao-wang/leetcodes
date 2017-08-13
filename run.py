@@ -374,9 +374,18 @@ class Run(unittest.TestCase):
         self.assertEqual(self.lst.largestRectangleArea([5, 4, 3, 5, 4]), 15)
         self.assertEqual(self.lst.largestRectangleArea([2, 1, 5, 6, 2, 3]), 10)
 
+    def test_decode_ways_leet91(self):
+        self.assertEqual(self.lst.numDecodings('3154'), 2)
+        self.assertEqual(self.lst.numDecodings('100'), 0)
+        self.assertEqual(self.lst.numDecodings('5201314'), 4)
+
     def test_best_time_to_buy_and_sell_stocks_leet121(self):
         self.assertEqual(self.lst.maxProfit([7, 1, 5, 3, 6, 4]), 5)
         self.assertEqual(self.lst.maxProfit([7, 6, 4, 3, 1]), 0)
+
+    def test_word_ladder_leet127(self):
+        wl = ["hot", "dot", "dog", "lot", "log", "cog"]
+        self.assertEqual(self.lst.ladderLength("hit", "cog", wl), 5)
 
     def test_longest_consecutive_leet128(self):
         self.assertEqual(self.lst.longestConsecutive([100, 4, 200, 1, 3, 2]), 4)
@@ -398,6 +407,9 @@ class Run(unittest.TestCase):
 
     def test_kth_largest_element_leet215(self):
         self.assertEqual(self.lst.findKthLargest([3, 2, 1, 5, 6, 4], 2), 5)
+
+    def test_product_of_array_except_self_leet238(self):
+        self.assertEqual(self.lst.productExceptSelf([1, 2, 3, 4]), [24, 12, 8, 6])
 
     def test_add_operators_leet282(self):
         self.assertEqual(sorted(self.lst.addOperators('123', 6)), sorted(["1+2+3", "1*2*3"]))

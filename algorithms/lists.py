@@ -1282,6 +1282,41 @@ class Lists(object):
                     k -= 1
         return max_area
 
+    def numDecodings(self, s):
+        """
+        91. Decode Ways
+
+        :type s: str
+        :rtype: int
+        A message containing letters from A-Z is being encoded to numbers
+        using the following mapping:
+
+        'A' -> 1
+        'B' -> 2
+        ...
+        'Z' -> 26
+        Given an encoded message containing digits, determine
+        the total number of ways to decode it.
+
+        For example,
+        Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12).
+
+        The number of ways decoding "12" is 2.
+        """
+
+        if not s:
+            return 0
+
+        d = [0] * (len(s) + 1)
+        d[0] = 1
+        d[1] = 1 if s[0] != '0' else 0
+        for i in xrange(2, len(s) + 1):
+            if 0 < int(s[i - 1:i]) <= 9:
+                d[i] += d[i - 1]
+            if s[i - 2:i][0] != '0' and int(s[i - 2:i]) < 27:
+                d[i] += d[i - 2]
+        return d[len(s)]
+
     def maxProfit(self, prices):
         """
         121. Best Time to Buy and Sell Stock
@@ -1303,6 +1338,44 @@ class Lists(object):
             if prices[i] < min_price:
                 min_price = prices[i]
         return max_profit
+
+    def ladderLength(self, beginWord, endWord, wordList):
+        """
+        127. Word Ladder
+        Given two words (beginWord and endWord), and a dictionary's word list,
+        find the length of shortest transformation sequence from beginWord to endWord, such that:
+
+        Only one letter can be changed at a time.
+        Each transformed word must exist in the word list.
+        Note that beginWord is not a transformed word.
+
+        Note:
+        Return 0 if there is no such transformation sequence.
+        All words have the same length.
+        All words contain only lowercase alphabetic characters.
+        You may assume no duplicates in the word list.
+        You may assume beginWord and endWord are non-empty and are not the same.
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype: int
+        """
+        if endWord not in wordList:
+            return 0
+        queue = [(beginWord, 1)]
+        wordList = set(wordList)
+        visited = set()
+        while queue:
+            word, index = queue.pop(0)
+            for i in xrange(len(word)):
+                for j in 'abcdefghijklmnopqrstuvwxyz':
+                    build = word[:i] + j + word[i + 1:]
+                    if build == endWord:
+                        return index + 1
+                    if build not in visited and build in wordList:
+                        visited.add(build)
+                        queue.append((build, index + 1))
+        return 0
 
     def longestConsecutive(self, nums):
         """
@@ -1410,6 +1483,33 @@ class Lists(object):
             else:
                 l = index + 1
 
+    def productExceptSelf(self, nums):
+        """
+        238. Product of Array Except Self
+        Given an array of n integers where n > 1, nums,
+        return an array output such that output[i] is equal to
+        the product of all the elements of nums except nums[i].
+
+        Solve it without division and in O(n).
+
+        For example, given [1,2,3,4], return [24,12,8,6].
+
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        if not nums:
+            return 0
+        left = [1]
+        right = [1]
+        res = []
+
+        for i in xrange(len(nums) - 1, -1, -1):
+            right.append(nums[i] * right[-1])
+        for i in xrange(len(nums)):
+            left.append(nums[i] * left[-1])
+            res.append(left[i] * right[len(nums) - i - 1])
+        return res
+
     def addOperators(self, num, target):
         """
         282. Expression Add Operators
@@ -1498,4 +1598,4 @@ class Lists(object):
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.largestRectangleArea([5, 4, 3, 5, 4])
+    print l.productExceptSelf([1, 2, 3, 4])
