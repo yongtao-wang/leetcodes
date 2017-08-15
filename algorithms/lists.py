@@ -1282,6 +1282,40 @@ class Lists(object):
                     k -= 1
         return max_area
 
+    def maximalRectangle(self, matrix):
+        """
+        85. Maximal Rectangle
+        Given a 2D binary matrix filled with 0's and 1's,
+        find the largest rectangle containing only 1's and return its area.
+        For example, given the following matrix:
+
+        1 0 1 0 0
+        1 0 1 1 1
+        1 1 1 1 1
+        1 0 0 1 0
+
+        Return 6.
+        :type matrix: List[List[str]]
+        :rtype: int
+        """
+        if not matrix:
+            return 0
+        w = len(matrix[0])
+        max_area = 0
+        height = [0] * (w + 1)
+        for row in matrix:
+            for i in xrange(w):
+                height[i] = height[i] + 1 if row[i] == '1' else 0
+            for i in xrange(w):
+                if height[i] > height[i + 1]:
+                    bar = height[i]
+                    j = i
+                    while j >= 0 and height[j] > height[i + 1]:
+                        bar = min(bar, height[j])
+                        max_area = max((i - j + 1) * bar, max_area)
+                        j -= 1
+        return max_area
+
     def numDecodings(self, s):
         """
         91. Decode Ways
@@ -1338,6 +1372,42 @@ class Lists(object):
             if prices[i] < min_price:
                 min_price = prices[i]
         return max_profit
+
+    def findLadders(self, beginWord, endWord, wordList):
+        """
+        126. Word Ladder II
+        (same as 127, return a list or visited words rather than the count of steps)
+        :type beginWord: str
+        :type endWord: str
+        :type wordList: List[str]
+        :rtype: List[List[str]]
+        """
+        if endWord not in wordList:
+            return []
+        res = []
+        wordList = set(wordList)
+        queue = {beginWord: [[beginWord]]}
+
+        # 将当前queue全部取出，全部处理完成后再放进queue
+        # 考虑做为BFS求全部解的模板
+        # 127不需要全部取出是因为只需要找到一任意一个解即可结束
+        while queue:
+            build_dict = {}
+            for word in queue:
+                if word == endWord:
+                    res.extend([k for k in queue[word]])
+                else:
+                    for i in xrange(len(word)):
+                        for c in 'abcdefghijklmnopqrstuvwxyz':
+                            build = word[:i] + c + word[i + 1:]
+                            if build in wordList:
+                                if build in build_dict:
+                                    build_dict[build] += [seq + [build] for seq in queue[word]]
+                                else:
+                                    build_dict[build] = [seq + [build] for seq in queue[word]]
+            wordList -= set(build_dict.keys())
+            queue = build_dict
+        return res
 
     def ladderLength(self, beginWord, endWord, wordList):
         """
@@ -1400,6 +1470,45 @@ class Lists(object):
                     end += 1
                 longest = max(longest, end - n)
         return longest
+
+    def getSkyline(self, buildings):
+        """
+        218. The Skyline Problem
+        (see description: https://leetcode.com/problems/the-skyline-problem/description/ )
+        :type buildings: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        import heapq
+        h = []
+        heights = [0]
+        max_height = 0
+        heapq.heapify(h)
+        skylines = []
+
+        for b in buildings:
+            heapq.heappush(h, (b[0], -b[2]))
+            heapq.heappush(h, (b[1], b[2]))
+        while h:
+            index, height = heapq.heappop(h)
+            if height < 0:
+                # found a starting point
+                height *= -1
+                if height > max_height:
+                    max_height = height
+                    heights.append(height)
+                    skylines.append([index, height])
+                else:
+                    heights.append(height)
+            else:
+                # found an ending point
+                if height < max_height or heights.count(max_height) > 1:
+                    heights.remove(height)
+                else:
+                    heights.remove(max_height)
+                    max_height = sorted(list(heights))[-1]
+                    skylines.append([index, max_height])
+
+        return skylines
 
     def numIslands(self, grid):
         """
@@ -1598,4 +1707,4 @@ class Lists(object):
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.productExceptSelf([1, 2, 3, 4])
+    print l.findLadders("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"])

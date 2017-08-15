@@ -132,6 +132,35 @@ class LinkedList(object):
         head.next = l1 or l2  # PYTHONIC!
         return res.next
 
+    def mergeKLists(self, lists):
+        """
+        23. Merge k Sorted Lists
+        Merge k sorted linked lists and return it as one sorted list.
+        Analyze and describe its complexity.
+        :type lists: List[ListNode]
+        :rtype: ListNode
+        """
+        '''
+        heapify: convert the iterable into a heap
+        heappush: insert the element and keep the heap order
+        heappop: remove and return the smallest element
+        heappushpop: first push then pop
+        heapreplace: first pop then push
+        '''
+        from heapq import heapify, heappop, heappush, heapreplace
+        new_head = node = ListNode(0)
+        h = [(n.val, n) for n in lists if n]
+        heapify(h)
+        while h:
+            v, n = h[0]
+            if n.next is None:
+                heappop(h)
+            else:
+                heapreplace(h, (n.next.val, n.next))
+            node.next = n
+            node = node.next
+        return new_head.next
+
     def swapPairs(self, head):
         """
         #24. Swap Nodes in Pairs

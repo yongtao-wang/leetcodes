@@ -383,6 +383,11 @@ class Run(unittest.TestCase):
         self.assertEqual(self.lst.maxProfit([7, 1, 5, 3, 6, 4]), 5)
         self.assertEqual(self.lst.maxProfit([7, 6, 4, 3, 1]), 0)
 
+    def test_word_ladder_II_leet126(self):
+        wl = ["hot", "dot", "dog", "lot", "log", "cog"]
+        ans = sorted([["hit", "hot", "lot", "log", "cog"], ["hit", "hot", "dot", "dog", "cog"]])
+        self.assertEqual(sorted(self.lst.findLadders("hit", "cog", wl)), ans)
+
     def test_word_ladder_leet127(self):
         wl = ["hot", "dot", "dog", "lot", "log", "cog"]
         self.assertEqual(self.lst.ladderLength("hit", "cog", wl), 5)
@@ -407,6 +412,13 @@ class Run(unittest.TestCase):
 
     def test_kth_largest_element_leet215(self):
         self.assertEqual(self.lst.findKthLargest([3, 2, 1, 5, 6, 4], 2), 5)
+
+    def test_skyline_problem_leet218(self):
+        city_1 = [[2, 9, 10], [3, 7, 15], [5, 12, 12], [15, 20, 10], [19, 24, 8]]
+        city_2 = [[0, 2, 3], [2, 5, 3]]
+        self.assertEqual(self.lst.getSkyline(city_1),
+                         [[2, 10], [3, 15], [7, 12], [12, 0], [15, 10], [20, 8], [24, 0]])
+        self.assertEqual(self.lst.getSkyline(city_2), [[0, 3], [5, 0]])
 
     def test_product_of_array_except_self_leet238(self):
         self.assertEqual(self.lst.productExceptSelf([1, 2, 3, 4]), [24, 12, 8, 6])
