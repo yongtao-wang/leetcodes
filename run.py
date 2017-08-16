@@ -423,6 +423,11 @@ class Run(unittest.TestCase):
     def test_product_of_array_except_self_leet238(self):
         self.assertEqual(self.lst.productExceptSelf([1, 2, 3, 4]), [24, 12, 8, 6])
 
+    def test_integer_to_english_words_leet273(self):
+        self.assertEqual(self.str.numberToWords(50868), 'Fifty Thousand Eight Hundred Sixty Eight')
+        self.assertEqual(self.str.numberToWords(50868),
+                         'One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven')
+
     def test_add_operators_leet282(self):
         self.assertEqual(sorted(self.lst.addOperators('123', 6)), sorted(["1+2+3", "1*2*3"]))
         self.assertEqual(sorted(self.lst.addOperators('232', 8)), sorted(["2*3+2", "2+3*2"]))

@@ -362,9 +362,81 @@ class Strings(object):
                 start += 1
         return s[min_start: min_start + w_len] if w_len != sys.maxint else ''
 
+    def numberToWords(self, num):
+        """
+        273. Integer to English Words
+        Convert a non-negative integer to its english words representation.
+        Given input is guaranteed to be less than 2^31 - 1.
+
+        For example,
+        123 -> "One Hundred Twenty Three"
+        12345 -> "Twelve Thousand Three Hundred Forty Five"
+        1234567 -> "One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven"
+        :type num: int
+        :rtype: str
+        """
+        if num == 0:
+            return 'Zero'
+
+        to_19 = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten",
+                 "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen",
+                 "Nineteen"]
+        tens = ["", "Ten", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"]
+        thousands = ["Thousand", "Million", "Billion"]
+
+        def build(n):
+            if n == 0:
+                return []
+            if n < 20:
+                return [to_19[n]]
+            if n < 100:
+                return [tens[n / 10]] + build(n % 10)
+            if n < 1000:
+                return [to_19[n / 100]] + ['Hundred'] + build(n % 100)
+
+            for i, v in enumerate(thousands, 1):
+                if n < 1000 ** (i + 1):
+                    return build(n / (1000 ** i)) + [v] + build(n % (1000 ** i))
+
+        return ' '.join(build(num))
+
+    def removeInvalidParentheses(self, s):
+        """
+        301. Remove Invalid Parentheses
+        Remove the minimum number of invalid parentheses in order to
+        make the input string valid. Return all possible results.
+
+        Note: The input string may contain letters other than the parentheses ( and ).
+
+        Examples:
+            "()())()" -> ["()()()", "(())()"]
+            "(a)())()" -> ["(a)()()", "(a())()"]
+            ")(" -> [""]
+
+        :type s: str
+        :rtype: List[str]
+        """
+        '''又是一个BFS。参考126 - word ladder II'''
+
+        def _is_valid(s):
+            stack = 0
+            for p in s:
+                if p == '(':
+                    stack += 1
+                elif p == ')':
+                    stack -= 1
+                    if stack < 0:
+                        return False
+            return stack == 0
+
+        level = {s}
+        while level:
+            valid = filter(_is_valid, level)
+            if valid:
+                return valid
+            level = {s[:i] + s[i + 1:] for s in level for i in xrange(len(s))}
+
 
 if __name__ == '__main__':
     ss = Strings()
-    print ss.minWindow('ADOBECODEBANC', 'ABC')
-    print ss.minWindow('ab', 'a')
-    print ss.minWindow('ab', 'b')
+    print ss.numberToWords(1234567)

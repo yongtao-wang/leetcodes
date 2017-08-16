@@ -102,3 +102,67 @@ class BSTIterator(object):
         # Your BSTIterator will be called like this:
         # i, v = BSTIterator(root), []
         # while i.hasNext(): v.append(i.next())
+
+
+class Codec:
+    """
+    297. Serialize and Deserialize Binary Tree
+    Serialization is the process of converting a data structure or object into
+    a sequence of bits so that it can be stored in a file or memory buffer,
+    or transmitted across a network connection link to be reconstructed later in
+    the same or another computer environment.
+
+    Design an algorithm to serialize and deserialize a binary tree.
+    There is no restriction on how your serialization/deserialization algorithm should work.
+    You just need to ensure that a binary tree can be serialized to a string and this string
+    can be deserialized to the original tree structure.
+
+    """
+    '''Using pre-order traversal'''
+
+    # Your Codec object will be instantiated and called as such:
+    # codec = Codec()
+    # codec.deserialize(codec.serialize(root))
+
+    def serialize(self, root):
+        """Encodes a tree to a single string.
+
+        :type root: TreeNode
+        :rtype: str
+        """
+        path = []
+        self._traversal(root, path)
+        return ','.join(path)
+
+    def _traversal(self, current_node, path):
+        if current_node:
+            path.append(str(current_node.val))
+            self._traversal(current_node.left, path)
+            self._traversal(current_node.right, path)
+        else:
+            path.append('#')
+
+    def deserialize(self, data):
+        """Decodes your encoded data to tree.
+
+        :type data: str
+        :rtype: TreeNode
+        """
+        return self._rebuild(data.split(','))
+
+    def _rebuild(self, path):
+        if not path:
+            return None
+        v = path.pop(0).strip()
+        if v == '#':
+            return None
+        n = TreeNode(int(v))
+        n.left = self._rebuild(path)
+        n.right = self._rebuild(path)
+        return n
+
+
+if __name__ == '__main__':
+    c = Codec()
+    node = c.deserialize('1, #, #')
+    print node.val

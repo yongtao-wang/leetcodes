@@ -28,6 +28,32 @@ class Lists(object):
             else:
                 return [rev[n], index]
 
+    def findMedianSortedArrays(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: float
+        """
+        l = len(nums1) + len(nums2)
+        if l % 2 == 1:
+            return self._find_kth(nums1, nums2, l / 2)
+        else:
+            return (self._find_kth(nums1, nums2, l / 2 - 1) + self._find_kth(nums1, nums2, l / 2)) / 2.0
+
+    def _find_kth(self, a, b, k):
+        if len(a) > len(b):
+            a, b = b, a
+        if not a:
+            return b[k]
+        if k == len(a) + len(b) - 1:
+            return max(a[-1], b[-1])
+        i = min(len(a) - 1, k / 2)
+        j = min(len(b) - 1, k - i)
+        if a[i] > b[j]:
+            return self._find_kth(a[:i], b[j:], i)
+        else:
+            return self._find_kth(a[i:], b[:j], j)
+
     def threeSum(self, nums):
         """
         # 15 3Sum
