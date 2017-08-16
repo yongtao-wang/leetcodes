@@ -41,6 +41,11 @@ class Lists(object):
             return (self._find_kth(nums1, nums2, l / 2 - 1) + self._find_kth(nums1, nums2, l / 2)) / 2.0
 
     def _find_kth(self, a, b, k):
+        """
+        :type a: List[int]
+        :type b: List[int]
+        :type k: int
+        """
         if len(a) > len(b):
             a, b = b, a
         if not a:
