@@ -30,6 +30,11 @@ class Lists(object):
 
     def findMedianSortedArrays(self, nums1, nums2):
         """
+        4. Median of Two Sorted Arrays
+        There are two sorted arrays nums1 and nums2 of size m and n respectively.
+
+        Find the median of the two sorted arrays.
+        The overall run time complexity should be O(log (m+n)).
         :type nums1: List[int]
         :type nums2: List[int]
         :rtype: float
@@ -694,6 +699,71 @@ class Lists(object):
                 dictionary[key] = [s]
         return [i for i in dictionary.itervalues()]
 
+    def solveNQueens(self, n):
+        """
+        51. N-Queens
+        The n-queens puzzle is the problem of placing n queens on an n×n chessboard
+        such that no two queens attack each other.
+
+        Given an integer n, return all distinct solutions to the n-queens puzzle.
+
+        Each solution contains a distinct board configuration of the n-queens' placement,
+        where 'Q' and '.' both indicate a queen and an empty space respectively.
+
+        For example,
+        There exist two distinct solutions to the 4-queens puzzle:
+
+        [
+         [".Q..",  // Solution 1
+          "...Q",
+          "Q...",
+          "..Q."],
+
+         ["..Q.",  // Solution 2
+          "Q...",
+          "...Q",
+          ".Q.."]
+        ]
+
+        :type n: int
+        :rtype: List[List[str]]
+        """
+        res = []
+        self._dfs_leet51([], n, [], [], res)
+        return [['.' * i + 'Q' + '.' * (n - i - 1) for i in r] for r in res]
+
+    def _dfs_leet51(self, queens, n, xy_diff, xy_sum, res):
+        p = len(queens)
+        if p == n:  # check width
+            res.append(queens)
+            return None
+        for q in xrange(n):  # loop through all heights
+            if q not in queens and p - q not in xy_diff and p + q not in xy_sum:
+                self._dfs_leet51(queens + [q], n, xy_diff + [p - q], xy_sum + [p + q], res)
+
+    def totalNQueens(self, n):
+        """
+        52. N-Queens II
+        Follow up for N-Queens problem.
+
+        Now, instead outputting board configurations,
+        return the total number of distinct solutions
+        :type n: int
+        :rtype: int
+        """
+        self.res = 0
+        self._dfs_leet52([], n, [], [])
+        return self.res
+
+    def _dfs_leet52(self, queens, n, xy_diff, xy_sum):
+        p = len(queens)
+        if p == n:
+            self.res += 1
+            return None
+        for q in xrange(n):
+            if q not in queens and p - q not in xy_diff and p + q not in xy_sum:
+                self._dfs_leet52(queens + [q], n, xy_diff + [p - q], xy_sum + [p + q])
+
     def maxSubArray(self, nums):
         """
         # 53. Maximum Subarray
@@ -753,6 +823,56 @@ class Lists(object):
             else:
                 merged.append(i)
         return merged
+
+    def insert(self, intervals, newInterval):
+        """
+        57. Insert Interval
+        Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+
+        You may assume that the intervals were initially sorted according to their start times.
+
+        Example 1:
+        Given intervals [1,3],[6,9], insert and merge [2,5] in as [1,5],[6,9].
+
+        Example 2:
+        Given [1,2],[3,5],[6,7],[8,10],[12,16], insert and merge [4,9] in as [1,2],[3,10],[12,16].
+
+        This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
+
+        :type intervals: List[Interval]
+        :type newInterval: Interval
+        :rtype: List[Interval]
+        """
+        '''
+        OR we can make a little use of # 56
+        ------------------------------------------------------
+        def insert(self, intervals, newInterval):
+            intervals += [newInterval]
+            res = []
+            for i in sorted(intervals, key=lambda k: k.start):
+                if res and i.start <= res[-1].end:
+                    res[-1].end = max(res[-1].end, i.end)
+                else:
+                    res.append(i)
+            return res
+        ------------------------------------------------------
+        '''
+        start = newInterval.start
+        end = newInterval.end
+        i = 0
+        res = []
+        while i < len(intervals):
+            if start <= intervals[i].end:
+                if end < intervals[i].start:
+                    break
+                start = min(start, intervals[i].start)
+                end = max(end, intervals[i].end)
+            else:
+                res.append(intervals[i])
+            i += 1
+        res.append(Interval(start, end))
+        res += intervals[i:]
+        return res
 
     # noinspection PyTypeChecker
     def generateMatrix(self, n):
@@ -1502,44 +1622,73 @@ class Lists(object):
                 longest = max(longest, end - n)
         return longest
 
-    def getSkyline(self, buildings):
+    def wordBreak(self, s, wordDict):
         """
-        218. The Skyline Problem
-        (see description: https://leetcode.com/problems/the-skyline-problem/description/ )
-        :type buildings: List[List[int]]
-        :rtype: List[List[int]]
+        139. Word Break
+        Given a non-empty string s and a dictionary wordDict containing
+        a list of non-empty words, determine if s can be segmented into
+        a space-separated sequence of one or more dictionary words.
+        You may assume the dictionary does not contain duplicate words.
+
+        For example, given
+        s = "leetcode",
+        dict = ["leet", "code"].
+
+        Return true because "leetcode" can be segmented as "leet code".
+
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: bool
         """
-        import heapq
-        h = []
-        heights = [0]
-        max_height = 0
-        heapq.heapify(h)
-        skylines = []
+        wordDict = set(wordDict)
+        dp = [False] * (len(s) + 1)
+        dp[0] = True
+        for i in xrange(0, len(s)):
+            for j in xrange(i, len(s)):
+                if dp[i] and s[i:j + 1] in wordDict:
+                    dp[j + 1] = True
+        return dp[len(s)]
 
-        for b in buildings:
-            heapq.heappush(h, (b[0], -b[2]))
-            heapq.heappush(h, (b[1], b[2]))
-        while h:
-            index, height = heapq.heappop(h)
-            if height < 0:
-                # found a starting point
-                height *= -1
-                if height > max_height:
-                    max_height = height
-                    heights.append(height)
-                    skylines.append([index, height])
-                else:
-                    heights.append(height)
-            else:
-                # found an ending point
-                if height < max_height or heights.count(max_height) > 1:
-                    heights.remove(height)
-                else:
-                    heights.remove(max_height)
-                    max_height = sorted(list(heights))[-1]
-                    skylines.append([index, max_height])
+    def wordBreakII(self, s, wordDict):
+        """
+        140. Word Break II
+        Given a non-empty string s and a dictionary wordDict containing
+        a list of non-empty words, add spaces in s to construct a sentence
+        where each word is a valid dictionary word. You may assume
+        the dictionary does not contain duplicate words.
 
-        return skylines
+        Return all such possible sentences.
+
+        For example, given
+        s = "catsanddog",
+        dict = ["cat", "cats", "and", "sand", "dog"].
+
+        A solution is ["cats and dog", "cat sand dog"].
+
+        :type s: str
+        :type wordDict: List[str]
+        :rtype: List[str]
+        """
+        '''DP + DFS'''
+        d = {}
+        return self._dfs_leet140(s, d, wordDict)
+
+    def _dfs_leet140(self, s, d, wordDict):
+        if not s:
+            return [None]
+        if s in d:
+            return d[s]
+        res = []
+        for word in wordDict:
+            n = len(word)
+            if word == s[:n]:
+                for each in self._dfs_leet140(s[n:], d, wordDict):
+                    if each:
+                        res.append(word + ' ' + each)
+                    else:
+                        res.append(word)
+            d[s] = res
+        return res
 
     def numIslands(self, grid):
         """
@@ -1622,6 +1771,45 @@ class Lists(object):
                 h = index - 1
             else:
                 l = index + 1
+
+    def getSkyline(self, buildings):
+        """
+        218. The Skyline Problem
+        (see description: https://leetcode.com/problems/the-skyline-problem/description/ )
+        :type buildings: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        import heapq
+        h = []
+        heights = [0]
+        max_height = 0
+        heapq.heapify(h)
+        skylines = []
+
+        for b in buildings:
+            heapq.heappush(h, (b[0], -b[2]))
+            heapq.heappush(h, (b[1], b[2]))
+        while h:
+            index, height = heapq.heappop(h)
+            if height < 0:
+                # found a starting point
+                height *= -1
+                if height > max_height:
+                    max_height = height
+                    heights.append(height)
+                    skylines.append([index, height])
+                else:
+                    heights.append(height)
+            else:
+                # found an ending point
+                if height < max_height or heights.count(max_height) > 1:
+                    heights.remove(height)
+                else:
+                    heights.remove(max_height)
+                    max_height = sorted(list(heights))[-1]
+                    skylines.append([index, max_height])
+
+        return skylines
 
     def productExceptSelf(self, nums):
         """

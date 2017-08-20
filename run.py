@@ -239,7 +239,17 @@ class Run(unittest.TestCase):
         self.assertEqual("{:.5f}".format(self.num.myPow(8.88023, 3)), str(700.28148))
         self.assertEqual("{:.5f}".format(self.num.myPow(8.88023, -3)), str(0.00143))
 
-    def test_maximum_subarray_leet51(self):
+    def test_n_queens_leet51(self):
+        ans = [[".Q..", "...Q", "Q...", "..Q."], ["..Q.", "Q...", "...Q", ".Q.."]]
+        self.assertEqual(sorted(self.lst.solveNQueens(4)), sorted(ans))
+
+    def test_n_queens_II_leet52(self):
+        self.assertEqual(self.lst.totalNQueens(4), 2)
+        self.assertEqual(self.lst.totalNQueens(7), 40)
+        self.assertEqual(self.lst.totalNQueens(8), 92)
+        self.assertEqual(self.lst.totalNQueens(11), 2680)
+
+    def test_maximum_subarray_leet53(self):
         self.assertEqual(self.lst.maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]), 6)
 
     def test_spiral_order_leet54(self):
@@ -425,7 +435,7 @@ class Run(unittest.TestCase):
 
     def test_integer_to_english_words_leet273(self):
         self.assertEqual(self.str.numberToWords(50868), 'Fifty Thousand Eight Hundred Sixty Eight')
-        self.assertEqual(self.str.numberToWords(50868),
+        self.assertEqual(self.str.numberToWords(1234567),
                          'One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven')
 
     def test_add_operators_leet282(self):
