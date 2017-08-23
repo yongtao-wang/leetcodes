@@ -43,3 +43,37 @@ class SubstringAndPalindrome(object):
                 start = i - max_length
                 max_length += 1
         return s[start:start + max_length]
+
+    def shortestPalindrome(self, s):
+        """
+        214. Shortest Palindrome
+        Given a string S, you are allowed to convert it to a palindrome by
+        adding characters in front of it. Find and return the shortest palindrome
+        you can find by performing this transformation.
+
+        For example:
+
+        Given "aacecaaa", return "aaacecaaa".
+
+        Given "abcd", return "dcbabcd".
+
+        :type s: str
+        :rtype: str
+        """
+        ll = len(s)
+        if ll <= 1:
+            return s
+        min_start, max_len, i = 0, 1, 0
+        while i < ll:
+            if ll - i < max_len / 2:
+                break
+            j, k = i, i
+            while k < ll - 1 and s[k] == s[k + 1]:
+                k += 1
+            i = k + 1
+            while k < ll - 1 and j > 0 and s[k + 1] == s[j - 1]:
+                k, j = k + 1, j - 1
+            if k - j + 1 >= max_len and j == 0:
+                min_start, max_len = j, k - j + 1
+        prefix = s[min_start + max_len: ll][::-1]
+        return prefix + s

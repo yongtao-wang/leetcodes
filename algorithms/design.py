@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import collections
+import heapq
 
 
 class LRUCache(object):
@@ -51,3 +52,56 @@ class LRUCache(object):
 
         if self.capacity < len(self.cache):
             self.cache.popitem(last=False)
+
+
+class MedianFinder(object):
+    """
+    295. Find Median from Data Stream
+    Median is the middle value in an ordered integer list.
+    If the size of the list is even, there is no middle value.
+    So the median is the mean of the two middle value.
+
+    Examples:
+    [2,3,4] , the median is 3
+
+    [2,3], the median is (2 + 3) / 2 = 2.5
+
+    Design a data structure that supports the following two operations:
+
+    void addNum(int num) - Add a integer number from the data stream to the data structure.
+    double findMedian() - Return the median of all elements so far.
+
+    For example:
+
+        addNum(1)
+        addNum(2)
+        findMedian() -> 1.5
+        addNum(3)
+        findMedian() -> 2
+
+    """
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.small = []
+        self.large = []
+
+    def addNum(self, num):
+        """
+        :type num: int
+        :rtype: void
+        """
+        heapq.heappush(self.small, -heapq.heappushpop(self.large, num))
+        if len(self.small) > len(self.large):
+            heapq.heappush(self.large, -heapq.heappop(self.small))
+
+    def findMedian(self):
+        """
+        :rtype: float
+        """
+        if len(self.small) == len(self.large):
+            return (self.large[0] - self.small[0]) / 2.0
+        else:
+            return self.large[0] * 1.0

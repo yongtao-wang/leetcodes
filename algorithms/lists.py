@@ -605,6 +605,30 @@ class Lists(object):
         dfs(candidates, target, 0, [], res)
         return res
 
+    def trap(self, height):
+        """
+        42. Trapping Rain Water
+        Given n non-negative integers representing an elevation map
+        where the width of each bar is 1, compute how much water it is able to trap after raining.
+
+        For example,
+        Given [0,1,0,2,1,0,1,3,2,1,2,1], return 6.
+
+        :type height: List[int]
+        :rtype: int
+        """
+        h = 0
+        d = {}
+        water = 0
+        for i in xrange(len(height)):
+            h = max(h, height[i])
+            d[i] = h
+        h = 0
+        for i in xrange(len(height) - 1, -1, -1):
+            h = max(h, height[i])
+            water += min(d[i], h) - height[i]
+        return water
+
     def permute(self, nums):
         """
         # 46. Permutations
@@ -1194,7 +1218,8 @@ class Lists(object):
     def searchMatrix(self, matrix, target):
         """
         74. Search a 2D Matrix
-        Write an efficient algorithm that searches for a value in an m x n matrix. This matrix has the following properties:
+        Write an efficient algorithm that searches for a value in an m x n matrix.
+        This matrix has the following properties:
 
         Integers in each row are sorted from left to right.
         The first integer of each row is greater than the last integer of the previous row.
@@ -1838,6 +1863,76 @@ class Lists(object):
             res.append(left[i] * right[len(nums) - i - 1])
         return res
 
+    def searchMatrixII(self, matrix, target):
+        """
+        240. Search a 2D Matrix II
+        Write an efficient algorithm that searches for a value in an m x n matrix.
+        This matrix has the following properties:
+
+        Integers in each row are sorted in ascending from left to right.
+        Integers in each column are sorted in ascending from top to bottom.
+        For example,
+
+        Consider the following matrix:
+
+        [
+          [1,   4,  7, 11, 15],
+          [2,   5,  8, 12, 19],
+          [3,   6,  9, 16, 22],
+          [10, 13, 14, 17, 24],
+          [18, 21, 23, 26, 30]
+        ]
+        Given target = 5, return true.
+
+        Given target = 20, return false.
+
+        :type matrix: List[List[int]]
+        :type target: int
+        :rtype: bool
+        """
+        if not matrix or not matrix[0]:
+            return False
+        for row in matrix:
+            if row[0] > target:
+                break
+            l, r = 0, len(row) - 1
+            while l < r:
+                mid = (l + r) / 2
+                if row[mid] == target:
+                    return True
+                elif row[mid] < target:
+                    l = mid + 1
+                else:
+                    r = mid
+            if row[l] == target or row[r] == target:
+                return True
+        return False
+
+    def binaryTreePaths(self, root):
+        """
+        257. Binary Tree Paths
+        Given a binary tree, return all root-to-leaf paths.
+        :type root: TreeNode
+        :rtype: List[str]
+        """
+        if not root:
+            return []
+        res = []
+        paths = []
+        self._dfs_leet257(root, [], res)
+        for r in res:
+            paths.append('->'.join(r))
+        return paths
+
+    def _dfs_leet257(self, node, path, res):
+        if not node.left and not node.right:
+            res.append(path + [str(node.val)])
+            return
+        if node.left:
+            self._dfs_leet257(node.left, path + [str(node.val)], res)
+        if node.right:
+            self._dfs_leet257(node.right, path + [str(node.val)], res)
+
     def addOperators(self, num, target):
         """
         282. Expression Add Operators
@@ -1897,6 +1992,148 @@ class Lists(object):
                 p += 1
             q += 1
 
+    def maxCoins(self, nums):
+        """
+        312. Burst Balloons
+        Given n balloons, indexed from 0 to n-1. Each balloon is painted with a number on it
+        represented by array nums. You are asked to burst all the balloons.
+        If the you burst balloon i you will get nums[left] * nums[i] * nums[right] coins.
+        Here left and right are adjacent indices of i. After the burst, the left and right then becomes adjacent.
+
+        Find the maximum coins you can collect by bursting the balloons wisely.
+
+        Note:
+        (1) You may imagine nums[-1] = nums[n] = 1. They are not real therefore you can not burst them.
+        (2) 0 ≤ n ≤ 500, 0 ≤ nums[i] ≤ 100
+
+        Example:
+
+        Given [3, 1, 5, 8]
+
+        Return 167
+
+            nums = [3,1,5,8] --> [3,5,8] -->   [3,8]   -->  [8]  --> []
+           coins =  3*1*5      +  3*5*8    +  1*3*8      + 1*8*1   = 167
+
+        :type nums: List[int]
+        :rtype: int
+        """
+        nums = [1] + nums + [1]
+        n = len(nums)
+        matrix = [[0 for _ in xrange(n)] for _ in xrange(n)]
+        k = 0
+        while k + 2 < n:
+            left, right = k, k + 2
+            matrix[left][right] = nums[k] * nums[k + 1] * nums[k + 2]
+            k += 1
+        for i in xrange(3, n):
+            k = 0
+            while k + i < n:
+                left, right = k, k + i
+                solutions = []
+                for j in xrange(left + 1, right):
+                    ans = matrix[left][j] + nums[left] * nums[j] * nums[right] + matrix[j][right]
+                    solutions.append(ans)
+                sol = max(solutions)
+                matrix[left][right] = sol
+                k += 1
+            i += 1
+        return matrix[0][-1]
+
+    def countSmaller(self, nums):
+        """
+        315. Count of Smaller Numbers After Self
+        You are given an integer array nums and you have to return a new counts array.
+        The counts array has the property where counts[i] is the number of smaller elements to the right of nums[i].
+
+        Example:
+
+        Given nums = [5, 2, 6, 1]
+
+        To the right of 5 there are 2 smaller elements (2 and 1).
+        To the right of 2 there is only 1 smaller element (1).
+        To the right of 6 there is 1 smaller element (1).
+        To the right of 1 there is 0 smaller element.
+        Return the array [2, 1, 1, 0].
+
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        rank = {val: i + 1 for i, val in enumerate(sorted(nums))}
+        N, res = len(nums), []
+        BITree = [0] * (N + 1)
+
+        def update(i):
+            while i <= N:
+                BITree[i] += 1
+                i += (i & -i)
+
+        def getSum(i):
+            s = 0
+            while i:
+                s += BITree[i]
+                i -= (i & -i)
+            return s
+
+        for x in reversed(nums):
+            res += getSum(rank[x] - 1),
+            update(rank[x])
+        return res[::-1]
+
+    def palindromePairs(self, words):
+        """
+        336. Palindrome Pairs
+        Given a list of unique words, find all pairs of distinct indices (i, j) in the given list,
+        so that the concatenation of the two words, i.e. words[i] + words[j] is a palindrome.
+
+        Example 1:
+        Given words = ["bat", "tab", "cat"]
+        Return [[0, 1], [1, 0]]
+        The palindromes are ["battab", "tabbat"]
+        Example 2:
+        Given words = ["abcd", "dcba", "lls", "s", "sssll"]
+        Return [[0, 1], [1, 0], [3, 2], [2, 4]]
+        The palindromes are ["dcbaabcd", "abcddcba", "slls", "llssssll"]
+
+        :type words: List[str]
+        :rtype: List[List[int]]
+        """
+        d = {w[::-1]: i for i, w in enumerate(words)}
+        res = []
+        for i, w in enumerate(words):
+            for j in xrange(len(w) + 1):
+                pre, post = w[:j], w[j:]
+                if pre in d and i != d[pre] and post == post[::-1]:
+                    res.append([i, d[pre]])
+                # check j > 0 to avoid calculating itself twice
+                if j > 0 and post in d and i != d[post] and pre == pre[::-1]:
+                    res.append([d[post], i])
+        return res
+
+    def reverseVowels(self, s):
+        """
+        345. Reverse Vowels of a String
+        Write a function that takes a string as input and reverse only the vowels of a string.
+        :type s: str
+        :rtype: str
+        """
+        d = 'aeiouAEIOU'
+        l, r = 0, len(s) - 1
+        s = list(s)
+        while l <= r:
+            if s[l] in d and s[r] in d:
+                s[l], s[r] = s[r], s[l]
+                l += 1
+                r -= 1
+            elif s[l] not in d:
+                l += 1
+            elif s[r] not in d:
+                r -= 1
+            else:
+                l += 1
+                r -= 1
+        return ''.join(s)
+
     def numberOfBoomerangs(self, points):
         """
         447. Number of Boomerangs
@@ -1926,4 +2163,4 @@ class Lists(object):
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.findLadders("hit", "cog", ["hot", "dot", "dog", "lot", "log", "cog"])
+    print l.countSmaller([5, 2, 6, 1])

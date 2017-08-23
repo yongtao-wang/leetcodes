@@ -362,6 +362,116 @@ class Strings(object):
                 start += 1
         return s[min_start: min_start + w_len] if w_len != sys.maxint else ''
 
+    def fractionToDecimal(self, numerator, denominator):
+        """
+        166. Fraction to Recurring Decimal
+        Given two integers representing the numerator and denominator of a fraction,
+        return the fraction in string format.
+
+        If the fractional part is repeating, enclose the repeating part in parentheses.
+
+        For example,
+
+        Given numerator = 1, denominator = 2, return "0.5".
+        Given numerator = 2, denominator = 1, return "2".
+        Given numerator = 2, denominator = 3, return "0.(6)".
+
+        :type numerator: int
+        :type denominator: int
+        :rtype: str
+        """
+        sign = '-' if numerator * denominator < 0 else ''
+        numerator, denominator = abs(numerator), abs(denominator)
+        d = {}
+        num, remain = divmod(numerator, denominator)
+        tail = ''
+        while remain != 0:
+            if remain in d:
+                tail = tail[:d[remain]] + '(' + tail[d[remain]:] + ')'
+                break
+            d[remain] = len(tail)
+            digit, remain = divmod(10 * remain, denominator)
+            tail += str(digit)
+        return sign + str(num) + (tail and '.' + tail)
+
+    def calculate(self, s):
+        """
+        224. Basic Calculator
+        Implement a basic calculator to evaluate a simple expression string.
+
+        The expression string may contain open ( and closing parentheses ),
+        the plus + or minus sign -, non-negative integers and empty spaces .
+
+        You may assume that the given expression is always valid.
+
+        Some examples:
+        "1 + 1" = 2
+        " 2-1 + 2 " = 3
+        "(1+(4+5+2)-3)+(6+8)" = 23
+
+        :type s: str
+        :rtype: int
+        """
+        res, num, sign, stack = 0, 0, 1, []
+        for d in s:
+            if d.isdigit():
+                num = 10 * num + int(d)
+            elif d in ['+', '-']:
+                res += sign * num
+                num = 0
+                sign = 1 if d == '+' else -1
+            elif d == '(':
+                stack.append(res)
+                stack.append(sign)
+                res, sign = 0, 1
+            elif d == ')':
+                res += sign * num
+                res *= stack.pop(-1)
+                res += stack.pop(-1)
+                num = 0
+        return res + sign * num
+
+    def calculate_2(self, s):
+        """
+        227. Basic Calculator II
+        Implement a basic calculator to evaluate a simple expression string.
+
+        The expression string contains only non-negative integers, +, -, *, / operators
+        and empty spaces . The integer division should truncate toward zero.
+
+        You may assume that the given expression is always valid.
+
+        Some examples:
+        "3+2*2" = 7
+        " 3/2 " = 1
+        " 3+5 / 2 " = 5
+
+        :type s: str
+        :rtype: int
+        """
+        if not s:
+            return "0"
+        stack, num, sign = [], 0, "+"
+        for i in xrange(len(s)):
+            if s[i].isdigit():
+                num = num * 10 + ord(s[i]) - ord("0")
+            if s[i] in {'+', '-', '*', '/'} or i == len(s) - 1:
+                if sign == "+":
+                    stack.append(num)
+                elif sign == "-":
+                    stack.append(-num)
+                elif sign == "*":
+                    stack.append(stack.pop() * num)
+                else:
+                    tmp = stack.pop()
+                    if tmp / num < 0 and tmp % num != 0:
+                        stack.append(tmp / num + 1)
+                    else:
+                        stack.append(tmp / num)
+                sign = s[i]
+                num = 0
+        return sum(stack)
+
     def numberToWords(self, num):
         """
         273. Integer to English Words
@@ -436,7 +546,100 @@ class Strings(object):
                 return valid
             level = {s[:i] + s[i + 1:] for s in level for i in xrange(len(s))}
 
+    def removeDuplicateLetters(self, s):
+        """
+        316. Remove Duplicate Letters
+        Given a string which contains only lowercase letters,
+        remove duplicate letters so that every letter appear once and only once.
+        You must make sure your result is the smallest in lexicographical order among all possible results.
+
+        Example:
+        Given "bcabc"
+        Return "abc"
+
+        Given "cbacdcbc"
+        Return "acdb"
+
+        :type s: str
+        :rtype: str
+        """
+        m = {c: i for i, c in enumerate(s)}
+        res = ''
+        for i, c in enumerate(s):
+            if c not in res:
+                while c < res[-1:] and i < m[res[-1:]]:
+                    res = res[:-1]
+                res += c
+        return res
+
+    def guessNumber(self, n, c):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        def guess(k):
+            if k == c:
+                return 0
+            elif k > c:
+                return -1
+            else:
+                return 1
+
+        l = 1
+        r = n
+        while l <= r:
+            mid = (l + r) / 2
+            g = guess(mid)
+            if g == 0:
+                return mid
+            elif g > 0:
+                r = mid
+            else:
+                l = mid + 1
+        return l
+
+    def lengthLongestPath(self, input):
+        """
+        388. Longest Absolute File Path
+        Suppose we abstract our file system by a string in the following manner:
+
+        The string "dir\n\tsubdir1\n\tsubdir2\n\t\tfile.ext" represents:
+
+        dir
+            subdir1
+            subdir2
+                file.ext
+        The directory dir contains an empty sub-directory subdir1 and a sub-directory subdir2 containing a file file.ext.
+
+        The string "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext" represents:
+
+        dir
+            subdir1
+                file1.ext
+                subsubdir1
+            subdir2
+                subsubdir2
+                    file2.ext
+        The directory dir contains two sub-directories subdir1 and subdir2. subdir1 contains a file file1.ext and an empty second-level sub-directory subsubdir1. subdir2 contains a second-level sub-directory subsubdir2 containing a file file2.ext.
+
+        We are interested in finding the longest (number of characters) absolute path to a file within our file system. For example, in the second example above, the longest absolute path is "dir/subdir2/subsubdir2/file2.ext", and its length is 32 (not including the double quotes).
+
+        Given a string representing the file system in the above format, return the length of the longest absolute path to file in the abstracted file system. If there is no file in the system, return 0.
+
+        :type input: str
+        :rtype: int
+        """
+        maxlen = 0
+        path = []
+        for line in input.splitlines():
+            path[line.count('\t'):] = [line.lstrip('\t')]
+            if '.' in line:
+                maxlen = max(maxlen, sum(map(len, path)) + len(path) - 1)
+        return maxlen
+
+
 
 if __name__ == '__main__':
     ss = Strings()
-    print ss.numberToWords(1234567)
+    print ss.lengthLongestPath()
