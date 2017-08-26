@@ -10,6 +10,47 @@ class TreeNode(object):
 
 
 class Tree(object):
+    def isSymmetric(self, root):
+        """
+        101. Symmetric Tree
+        Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+
+        :type root: TreeNode
+        :rtype: bool
+        """
+        '''
+        another solution using recursion:
+        
+        def isSymmetric(self, root):
+            """
+            :type root: TreeNode
+            :rtype: bool
+            """
+            def sym(left, right):
+                if left and right:
+                    return left.val == right.val and sym(left.left, right.right) and sym(left.right, right.left)
+                else:
+                    return left == right
+            if not root:
+                return True
+            return sym(root.left, root.right)
+        '''
+        if not root:
+            return True
+        queue = [[root.left, root.right]]
+
+        while queue:
+            left, right = queue.pop(0)
+            if not left and not right:
+                continue
+            if not left or not right:
+                return False
+            if left.val != right.val:
+                return False
+            queue.append([left.right, right.left])
+            queue.append([left.left, right.right])
+        return True
+
     def lowestCommonAncestorBST(self, root, p, q):
         """
         235. Lowest Common Ancestor of a Binary Search Tree

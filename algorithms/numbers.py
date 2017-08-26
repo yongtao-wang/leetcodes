@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import math
+
+
 class Numbers(object):
     def reverse(self, x):
         """
@@ -34,6 +37,25 @@ class Numbers(object):
             ans *= ans
         ans *= self.myPow(x, k - index)
         return ans if n > 0 else (1.0 / ans if ans != 0 else 1.0)
+
+    def isNumber(self, s):
+        """
+        65. Valid Number
+        Validate if a given string is numeric.
+
+        Some examples:
+        "0" => true
+        " 0.1 " => true
+        "abc" => false
+        "1 a" => false
+        "2e10" => true
+
+        :type s: str
+        :rtype: bool
+        """
+        import re
+        regex = re.compile('^[\s]*[+-]?(\d+\.\d*|\d*\.?\d+)(e[+-]?\d+)?[\s]*$')
+        return bool(regex.match(s))
 
     def mySqrt(self, x):
         """
@@ -108,6 +130,72 @@ class Numbers(object):
                 dict.add(next_sum)
                 nums = [i for i in str(next_sum)]
 
+    def countPrimes(self, n):
+        """
+        204. Count Primes
+        Count the number of prime numbers less than a non-negative number, n.
+
+        :type n: int
+        :rtype: int
+        """
+        if n < 3:
+            return 0
+        dp = [True] * n
+        i = 2
+        while i * i < n:
+            dp[i * i: n: i] = [False] * len(dp[i * i: n: i])
+            i += 1
+        return sum(dp)
+
+    def numSquares(self, n):
+        """
+        279. Perfect Squares
+        Given a positive integer n, find the least number of
+        perfect square numbers (for example, 1, 4, 9, 16, ...) which sum to n.
+
+        For example, given n = 12, return 3 because 12 = 4 + 4 + 4;
+        given n = 13, return 2 because 13 = 4 + 9.
+
+        :type n: int
+        :rtype: int
+        """
+        count = 0
+        while n > 0:
+            root = int(math.sqrt(n))
+            n -= root ** 2
+            count += 1
+        return count
+
+    def wiggleSort(self, nums):
+        """
+        280. Wiggle Sort
+        Given an unsorted array nums, reorder it in-place such that nums[0] <= nums[1] >= nums[2] <= nums[3]....
+
+        For example, given nums = [3, 5, 2, 1, 6, 4], one possible answer is [1, 6, 2, 5, 3, 4].
+
+        :type nums: List[int]
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        '''允许相等比较简单'''
+        for i in range(len(nums)):
+            nums[i:i + 2] = sorted(nums[i:i + 2], reverse=bool(i % 2))
+
+    def wiggleSort2(self, nums):
+        """
+        324. Wiggle Sort II
+        Given an unsorted array nums, reorder it such that nums[0] < nums[1] > nums[2] < nums[3]....
+
+        Example:
+        (1) Given nums = [1, 5, 1, 1, 6, 4], one possible answer is [1, 4, 1, 5, 1, 6].
+        (2) Given nums = [1, 3, 2, 2, 3, 1], one possible answer is [2, 3, 1, 3, 1, 2].
+
+        :type nums: List[int]
+        :rtype: void Do not return anything, modify nums in-place instead.
+        """
+        nums.sort()
+        half = len(nums[::2])
+        nums[::2], nums[1::2] = nums[:half][::-1], nums[half:][::-1]
+
     def isPowerOfThree(self, n):
         """
         326. Power of Three
@@ -125,4 +213,4 @@ class Numbers(object):
 if __name__ == '__main__':
     # debug template
     n = Numbers()
-    print n.isHappy(4)
+    print n.wiggleSort([1, 1, 1, 2, 2, 2])

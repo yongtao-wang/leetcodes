@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+
+import numpy
+
+
 class Interval(object):
     def __init__(self, s=0, e=0):
         self.start = s
@@ -1715,6 +1719,60 @@ class Lists(object):
             d[s] = res
         return res
 
+    def maxPoints(self, points):
+        """
+        149. Max Points on a Line
+        Given n points on a 2D plane, find the maximum number
+        of points that lie on the same straight line.
+
+        :type points: List[Point]
+        :rtype: int
+        """
+
+        l = len(points)
+        max_count = 0
+        for i in xrange(l):
+            d = {'vertical': 1}
+            count_lines = 0
+            ix, iy = points[i].x, points[i].y
+            for j in xrange(i + 1, l):
+                px, py = points[j].x, points[j].y
+                if px == ix and py == iy:
+                    count_lines += 1
+                    continue
+                if px == ix:
+                    slope = 'vertical'
+                else:
+                    slope = numpy.longdouble(1) * (py - iy) / (px - ix)
+                if slope not in d:
+                    d[slope] = 1
+                d[slope] += 1
+
+            max_count = max(max_count, max(d.values()) + count_lines)
+        return max_count
+
+    def rob(self, nums):
+        """
+        198. House Robber
+        You are a professional robber planning to rob houses along a street.
+        Each house has a certain amount of money stashed, the only constraint
+        stopping you from robbing each of them is that adjacent houses have security
+        system connected and it will automatically contact the police if two adjacent
+        houses were broken into on the same night.
+
+        Given a list of non-negative integers representing the amount of money of each house,
+        determine the maximum amount of money you can rob tonight without alerting the police.
+
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        pre, now = 0, 0
+        for i in nums:
+            pre, now = now, max(pre + i, now)
+        return now
+
     def numIslands(self, grid):
         """
         200. Number of Islands
@@ -1761,6 +1819,36 @@ class Lists(object):
         self._dfs_leet200(grid, m - 1, n)
         self._dfs_leet200(grid, m, n + 1)
         self._dfs_leet200(grid, m, n - 1)
+
+    def rob_2(self, nums):
+        """
+        213. House Robber II
+        Note: This is an extension of House Robber.
+
+        After robbing those houses on that street, the thief has found himself
+        a new place for his thievery so that he will not get too much attention.
+        This time, all houses at this place are arranged in a circle. That means
+        the first house is the neighbor of the last one. Meanwhile, the security
+        system for these houses remain the same as for those in the previous street.
+
+        Given a list of non-negative integers representing the amount of money of each house,
+        determine the maximum amount of money you can rob tonight without alerting the police.
+
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums:
+            return 0
+        pre, now = 0, 0
+        if len(nums) == 1:
+            return nums[0]
+        for i in nums[:-1]:
+            pre, now = now, max(pre + i, now)
+        highest = now
+        pre, now = 0, 0
+        for i in nums[1:]:
+            pre, now = now, max(pre + i, now)
+        return max(highest, now)
 
     def findKthLargest(self, nums, k):
         """
@@ -1836,6 +1924,42 @@ class Lists(object):
 
         return skylines
 
+    def summaryRanges(self, nums):
+        """
+        228. Summary Ranges
+        Given a sorted integer array without duplicates, return the summary of its ranges.
+
+        Example 1:
+            Input: [0,1,2,4,5,7]
+            Output: ["0->2","4->5","7"]
+        Example 2:
+            Input: [0,2,3,4,6,8,9]
+            Output: ["0","2->4","6","8->9"]
+
+        :type nums: List[int]
+        :rtype: List[str]
+        """
+        if not nums:
+            return []
+        nums.append(nums[0] - 1)
+        res = []
+        i = 0
+        while i < len(nums) - 1:
+            j = i
+            while j < len(nums) - 1:
+                if nums[j] + 1 == nums[j + 1]:
+                    j += 1
+                else:
+                    if i == j:
+                        s = str(nums[i])
+                    else:
+                        s = str(nums[i]) + '->' + str(nums[j])
+                    res.append(s)
+                    j += 1
+                    i = j
+                    break
+        return res
+
     def productExceptSelf(self, nums):
         """
         238. Product of Array Except Self
@@ -1907,6 +2031,103 @@ class Lists(object):
             if row[l] == target or row[r] == target:
                 return True
         return False
+
+    def shortestDistance(self, words, word1, word2):
+        """
+        243. Shortest Word Distance
+        Given a list of words and two words word1 and word2,
+        return the shortest distance between these two words in the list.
+
+        For example,
+        Assume that words = ["practice", "makes", "perfect", "coding", "makes"].
+
+        Given word1 = “coding”, word2 = “practice”, return 3.
+        Given word1 = "makes", word2 = "coding", return 1.
+
+        :type words: List[str]
+        :type word1: str
+        :type word2: str
+        :rtype: int
+        """
+        l = len(words)
+        m, n = l, l
+        res = l
+        for i, w in enumerate(words):
+            if w == word1:
+                m = i
+                res = min(res, abs(m - n))
+            elif w == word2:
+                n = i
+                res = min(res, abs(m - n))
+        return res
+
+    def shortestWordDistance(self, words, word1, word2):
+        """
+        245. Shortest Word Distance III
+        This is a follow up of Shortest Word Distance.
+        The only difference is now word1 could be the same as word2.
+
+        Given a list of words and two words word1 and word2,
+        return the shortest distance between these two words in the list.
+
+        word1 and word2 may be the same and they represent two individual words in the list.
+
+        For example,
+        Assume that words = ["practice", "makes", "perfect", "coding", "makes"].
+
+        Given word1 = “makes”, word2 = “coding”, return 1.
+        Given word1 = "makes", word2 = "makes", return 3.
+
+        :type words: List[str]
+        :type word1: str
+        :type word2: str
+        :rtype: int
+        """
+        if word1 == word2:
+            d = [i for i, w in enumerate(words) if w == word1]
+            res = len(words)
+            for n in xrange(1, len(d)):
+                res = min(res, d[n] - d[n - 1])
+            return res
+        res, d = len(words), {}
+        for i, w in enumerate(words):
+            if w == word1 and word2 in d:
+                res = min(res, i - d[word2])
+            if w == word2 and word1 in d:
+                res = min(res, i - d[word1])
+            if w == word1 or w == word2:
+                d[w] = i
+        return res
+
+    def minCost(self, costs):
+        """
+        256. Paint House
+        There are a row of n houses, each house can be painted
+        with one of the three colors: red, blue or green.
+        The cost of painting each house with a certain color is different.
+        You have to paint all the houses such that no two adjacent houses have the same color.
+
+        The cost of painting each house with a certain color is represented
+        by a n x 3 cost matrix. For example, costs[0][0] is the cost of painting
+        house 0 with color red; costs[1][2] is the cost of painting house 1 with color green,
+        and so on... Find the minimum cost to paint all houses.
+
+        Note:
+        All costs are positive integers.
+
+        :type costs: List[List[int]]
+        :rtype: int
+        """
+        if len(costs) == 0:
+            return 0
+        dp = costs[0]
+
+        for i in xrange(1, len(costs)):
+            cur = dp[:]
+            dp[0] = costs[i][0] + min(cur[1:3])
+            dp[1] = costs[i][1] + min(cur[0], dp[2])
+            dp[2] = costs[i][2] + min(cur[:2])
+        return min(dp)
 
     def binaryTreePaths(self, root):
         """
@@ -2110,6 +2331,26 @@ class Lists(object):
                     res.append([d[post], i])
         return res
 
+    def rob_3(self, root):
+        """
+        337. House Robber III
+        The thief has found himself a new place for his thievery again.
+        There is only one entrance to this area, called the "root." Besides the root,
+        each house has one and only one parent house. After a tour, the smart thief
+        realized that "all houses in this place forms a binary tree". It will automatically
+        contact the police if two directly-linked houses were broken into on the same night.
+
+        :type root: TreeNode
+        :rtype: int
+        """
+        return max(self._dfs_leet337(root))
+
+    def _dfs_leet337(self, root):
+        if not root:
+            return (0, 0)
+        left, right = self._dfs_leet337(root.left), self._dfs_leet337(root.right)
+        return (root.val + left[1] + right[1]), max(left) + max(right)
+
     def reverseVowels(self, s):
         """
         345. Reverse Vowels of a String
@@ -2159,8 +2400,32 @@ class Lists(object):
                 res += h[k] * (h[k] - 1)
         return res
 
+    def findDisappearedNumbers(self, nums):
+        """
+        448. Find All Numbers Disappeared in an Array
+        Given an array of integers where 1 ≤ a[i] ≤ n (n = size of array),
+        some elements appear twice and others appear once.
+
+        Find all the elements of [1, n] inclusive that do not appear in this array.
+
+        Could you do it without extra space and in O(n) runtime? You may assume
+        the returned list does not count as extra space.
+
+        Example:
+
+        Input:
+        [4,3,2,7,8,2,3,1]
+
+        Output:
+        [5,6]
+
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+        return list(set(i for i in xrange(1, len(nums) + 1)) - set(nums))
+
 
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.countSmaller([5, 2, 6, 1])
+    print l.summaryRanges([0, 1, 2, 4, 5, 7])

@@ -394,6 +394,42 @@ class Strings(object):
             tail += str(digit)
         return sign + str(num) + (tail and '.' + tail)
 
+    def isIsomorphic(self, s, t):
+        """
+        205. Isomorphic Strings
+        Given two strings s and t, determine if they are isomorphic.
+
+        Two strings are isomorphic if the characters in s can be replaced to get t.
+
+        All occurrences of a character must be replaced with another character
+        while preserving the order of characters. No two characters may map to
+        the same character but a character may map to itself.
+
+        For example,
+            Given "egg", "add", return true.
+
+            Given "foo", "bar", return false.
+
+            Given "paper", "title", return true.
+
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+        '''
+        regular solution is
+        
+        def isIsomorphic(self, s, t):
+            d1, d2 = {}, {}
+            for i, c in enumerate(s):
+                d1[c] = d1.get(c, []) + [i]
+            for i, c in enumerate(t):
+                d2[c] = d2.get(c, []) + [i]
+            return sorted(d1.values()) == sorted(d2.values())
+        
+        '''
+        return len(set(zip(s, t))) == len(set(s)) == len(set(t))
+
     def calculate(self, s):
         """
         224. Basic Calculator
