@@ -10,6 +10,36 @@ class TreeNode(object):
 
 
 class Tree(object):
+    def recoverTree(self, root):
+        """
+        99. Recover Binary Search Tree
+        Two elements of a binary search tree (BST) are swapped by mistake.
+
+        Recover the tree without changing its structure.
+        :type root: TreeNode
+        :rtype: void Do not return anything, modify root in-place instead.
+        """
+        self.pre = None
+        self.n1 = None
+        self.n2 = None
+        self._traversal(root)
+        if self.n1 and self.n2:
+            self.n1.val, self.n2.val = self.n2.val, self.n1.val
+
+    def _traversal(self, node):
+        if not node:
+            return
+        self._traversal(node.left)
+        if self.pre:
+            if self.pre.val > node.val:
+                if not self.n1:
+                    self.n1 = self.pre
+                    self.n2 = node
+                else:
+                    self.n2 = node
+        self.pre = node
+        self._traversal(node.right)
+
     def isSymmetric(self, root):
         """
         101. Symmetric Tree
@@ -93,6 +123,52 @@ class Tree(object):
             return root
 
         return left or right
+
+    def longestConsecutive(self, root):
+        """
+        298. Binary Tree Longest Consecutive Sequence
+        Given a binary tree, find the length of the longest consecutive sequence path.
+
+        The path refers to any sequence of nodes from some starting node to any node
+        in the tree along the parent-child connections. The longest consecutive path
+        need to be from parent to child (cannot be the reverse).
+
+        :type root: TreeNode
+        :rtype: int
+        """
+        '''
+        stack solution provided
+        --------------------------------------------
+        def longestConsecutive(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        max_len = 0
+        if not root:
+            return 0
+        stack = [(root, 1)]
+        while stack:
+            node, c = stack.pop()
+            if node.left:
+                stack.append((node.left, c + 1 if node.val + 1 == node.left.val else 1))
+            if node.right:
+                stack.append((node.right, c + 1 if node.val + 1 == node.right.val else 1))
+            max_len = max(max_len, c)
+        return max_len
+        --------------------------------------------
+        '''
+        if not root:
+            return 0
+        return max(self._find(root.left, 1, root.val), self._find(root.right, 1, root.val))
+
+    def _find(self, node, n, val):
+        if not node:
+            return n
+        n = n + 1 if val + 1 == node.val else 1
+        left = self._find(node.left, n, node.val)
+        right = self._find(node.right, n, node.val)
+        return max(left, right, n)
 
 
 # Definition for a  binary tree node
@@ -264,6 +340,25 @@ class Trie(object):
                 return False
             node = node.children[c]
         return True if node else False
+
+    def isSubtree(self, s, t):
+        """
+        572. Subtree of Another Tree
+        Given two non-empty binary trees s and t, check whether tree t has exactly
+        the same structure and node values with a subtree of s. A subtree of s is a
+        tree consists of a node in s and all of this node's descendants.
+        The tree s could also be considered as a subtree of itself.
+
+        :type s: TreeNode
+        :type t: TreeNode
+        :rtype: bool
+        """
+        return self._serialize(t) in self._serialize(s)
+
+    def _serialize(self, root):
+        if not root:
+            return 'N'
+        return '(%s),(%s),(%s)' % (root.val, self._serialize(root.left), self._serialize(root.right))
 
 if __name__ == '__main__':
     c = Codec()

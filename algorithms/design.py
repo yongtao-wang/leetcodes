@@ -141,3 +141,44 @@ class WordDistance(object):
         :rtype: int
         """
         return min(abs(i - j) for i in self.d[word1] for j in self.d[word2])
+
+
+class ZigzagIterator(object):
+    """
+    281. Zigzag Iterator
+    Given two 1d vectors, implement an iterator to return their elements alternately.
+
+    For example, given two 1d vectors:
+
+    v1 = [1, 2]
+    v2 = [3, 4, 5, 6]
+    By calling next repeatedly until hasNext returns false, the order of elements
+    returned by next should be: [1, 3, 2, 4, 5, 6].
+
+    Follow up: What if you are given k 1d vectors? How well can your code be extended to such cases?
+
+    """
+    '''不要将值都存储出来。这不是iterator应该做的'''
+
+    def __init__(self, v1, v2):
+        """
+        Initialize your data structure here.
+        :type v1: List[int]
+        :type v2: List[int]
+        """
+        self._queue = [(len(v), iter(v)) for v in [v1, v2] if v]
+
+    def next(self):
+        """
+        :rtype: int
+        """
+        l, i = self._queue.pop(0)
+        if l > 1:
+            self._queue.append((l - 1, i))
+        return i.next()
+
+    def hasNext(self):
+        """
+        :rtype: bool
+        """
+        return len(self._queue) > 0

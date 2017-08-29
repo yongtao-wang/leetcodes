@@ -218,6 +218,13 @@ class Run(unittest.TestCase):
     def test_trapping_rain_water_leet42(self):
         self.assertEqual(self.lst.trap([0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1]), 6)
 
+    def test_wildcard_matching_leet44(self):
+        self.assertTrue(self.str.isMatchWildcard('aa', '*'))
+        self.assertTrue(self.str.isMatchWildcard('aaaaaab', '*ab'))
+        self.assertTrue(self.str.isMatchWildcard('aaaaaab', 'a*b'))
+        self.assertTrue(self.str.isMatchWildcard('ab', 'a******'))
+        self.assertFalse(self.str.isMatchWildcard('aab', 'c*a*b'))
+
     def test_permutation_leet46(self):
         self.assertEqual(sorted(self.lst.permute([1, 2, 3])),
                          sorted([[1, 2, 3], [1, 3, 2], [2, 1, 3],
@@ -477,6 +484,11 @@ class Run(unittest.TestCase):
     def test_length_of_longest_absolute_path_leet388(self):
         path = "dir\n\tsubdir1\n\t\tfile1.ext\n\t\tsubsubdir1\n\tsubdir2\n\t\tsubsubdir2\n\t\t\tfile2.ext"
         self.assertEqual(self.str.lengthLongestPath(path), 32)
+
+    def test_partition_equal_subset_sum_leet416(self):
+        self.assertTrue(self.lst.canPartition([1, 5, 11, 5]))
+        self.assertFalse(self.lst.canPartition([1, 2, 3, 5]))
+        self.assertFalse(self.lst.canPartition([1, 1, 3, 7]))
 
     def test_number_of_boomerangs_leet447(self):
         self.assertEqual(self.lst.numberOfBoomerangs([[0, 0], [1, 0], [2, 0]]), 2)

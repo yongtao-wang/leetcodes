@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-import numpy
-
 
 class Interval(object):
     def __init__(self, s=0, e=0):
@@ -555,6 +553,46 @@ class Lists(object):
                 cube_dict[(i / 3, j / 3)].add(board[i][j])
         return True
 
+    def solveSudoku(self, board):
+        """
+        37. Sudoku Solver
+        Write a program to solve a Sudoku puzzle by filling the empty cells.
+
+        Empty cells are indicated by the character '.'.
+
+        You may assume that there will be only one unique solution
+        :type board: List[List[str]]
+        :rtype: void Do not return anything, modify board in-place instead.
+        """
+        if not board or not board[0]:
+            return
+        self._solve_sudoku(board)
+
+    def _solve_sudoku(self, board):
+        for i in xrange(len(board)):
+            for j in xrange(len(board[0])):
+                if board[i][j] == '.':
+                    for num in xrange(1, 10):
+                        if self._is_valid_input(board, i, j, num):
+                            row = board[i]
+                            board[i] = board[i][:j] + str(num) + board[j + 1:]
+                            if self.solveSudoku(board):
+                                return True
+                            else:
+                                board[i] = row
+                        return False
+        return True
+
+    def _is_valid_input(self, board, row, col, n):
+        for i in xrange(9):
+            if board[i][col] != '.' and board[i][col] == str(n):
+                return False
+            if board[row][i] != '.' and board[row][i] == str(n):
+                return False
+            if board[(row + i) / 3, (col + i) / 3] != '.' and board[(row + i) / 3, (col + i) / 3] == str(n):
+                return False
+        return True
+
     def combinationSum(self, candidates, target):
         """
         # 39. Combination Sum
@@ -632,6 +670,39 @@ class Lists(object):
             h = max(h, height[i])
             water += min(d[i], h) - height[i]
         return water
+
+    def jump(self, nums):
+        """
+        45. Jump Game II
+        Given an array of non-negative integers,
+        you are initially positioned at the first index of the array.
+
+        Each element in the array represents your maximum jump length at that position.
+
+        Your goal is to reach the last index in the minimum number of jumps.
+
+        For example:
+        Given array A = [2,3,1,1,4]
+
+        The minimum number of jumps to reach the last index is 2.
+        (Jump 1 step from index 0 to 1, then 3 steps to the last index.)
+
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums or len(nums) == 1:
+            return 0
+        step = 1
+        start = 0
+        end = nums[start]
+        max_pos = start + nums[start]
+        while end < len(nums) - 1:
+            for i in xrange(start + 1, end + 1):
+                max_pos = max(max_pos, nums[i] + i)
+            step += 1
+            start = end
+            end = max_pos
+        return step
 
     def permute(self, nums):
         """
@@ -1743,7 +1814,7 @@ class Lists(object):
                 if px == ix:
                     slope = 'vertical'
                 else:
-                    slope = numpy.longdouble(1) * (py - iy) / (px - ix)
+                    slope = (py - iy) / (px - ix)  # numpy.longfloat(1) * (py - iy) / (px - ix)
                 if slope not in d:
                     d[slope] = 1
                 d[slope] += 1
@@ -1987,6 +2058,42 @@ class Lists(object):
             res.append(left[i] * right[len(nums) - i - 1])
         return res
 
+    def maxSlidingWindow(self, nums, k):
+        """
+        239. Sliding Window Maximum
+        Given an array nums, there is a sliding window of size k which is moving
+        from the very left of the array to the very right. You can only see the k
+        numbers in the window. Each time the sliding window moves right by one position.
+
+        For example,
+        Given nums = [1,3,-1,-3,5,3,6,7], and k = 3.
+
+        Window position                Max
+        ---------------               -----
+        [1  3  -1] -3  5  3  6  7       3
+         1 [3  -1  -3] 5  3  6  7       3
+         1  3 [-1  -3  5] 3  6  7       5
+         1  3  -1 [-3  5  3] 6  7       5
+         1  3  -1  -3 [5  3  6] 7       6
+         1  3  -1  -3  5 [3  6  7]      7
+        Therefore, return the max sliding window as [3,3,5,5,6,7].
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+        import collections
+        d = collections.deque()
+        res = []
+        for i, n in enumerate(nums):
+            while d and nums[d[i]] < n:
+                d.pop()
+            d.append(i)
+            if d[0] == i - k:
+                d.popleft()
+            if i >= k - 1:
+                res.append(nums[d[0]])
+        return res
+
     def searchMatrixII(self, matrix, target):
         """
         240. Search a 2D Matrix II
@@ -2099,6 +2206,29 @@ class Lists(object):
                 d[w] = i
         return res
 
+    def getFactors(self, n):
+        """
+        254. Factor Combinations
+        Numbers can be regarded as product of its factors. For example,
+
+        8 = 2 x 2 x 2;
+          = 2 x 4.
+        Write a function that takes an integer n and return all possible combinations of its factors.
+
+        :type n: int
+        :rtype: List[List[int]]
+        """
+        queue = [(n, 2, [])]
+        res = []
+        while queue:
+            cur, i, ans = queue.pop()
+            while i * i <= cur:
+                if cur % i == 0:
+                    res.append(ans + [i, cur / i])
+                    queue.append((cur / i, i, ans + [i]))
+                i += 1
+        return res
+
     def minCost(self, costs):
         """
         256. Paint House
@@ -2153,6 +2283,19 @@ class Lists(object):
             self._dfs_leet257(node.left, path + [str(node.val)], res)
         if node.right:
             self._dfs_leet257(node.right, path + [str(node.val)], res)
+
+    def alienOrder(self, words):
+        """
+        269. Alien Dictionary
+        There is a new alien language which uses the latin alphabet.
+        However, the order among letters are unknown to you.
+        You receive a list of non-empty words from the dictionary,
+        where words are sorted lexicographically by the rules of this new language.
+        Derive the order of letters in this language.
+
+        :type words: List[str]
+        :rtype: str
+        """
 
     def addOperators(self, num, target):
         """
@@ -2375,6 +2518,105 @@ class Lists(object):
                 r -= 1
         return ''.join(s)
 
+    def canCross(self, stones):
+        """
+        403. Frog Jump
+        A frog is crossing a river. The river is divided into x units and at
+        each unit there may or may not exist a stone. The frog can jump on a stone,
+        but it must not jump into the water.
+
+        Given a list of stones' positions (in units) in sorted ascending order,
+        determine if the frog is able to cross the river by landing on the last stone.
+        Initially, the frog is on the first stone and assume the first jump must be 1 unit.
+
+        If the frog's last jump was k units, then its next jump must be either k - 1,
+        k, or k + 1 units. Note that the frog can only jump in the forward direction.
+
+        Note:
+
+        The number of stones is ≥ 2 and is < 1,100.
+        Each stone's position will be a non-negative integer < 231.
+        The first stone's position is always 0.
+        Example 1:
+
+        [0,1,3,5,6,8,12,17]
+
+        There are a total of 8 stones.
+        The first stone at the 0th unit, second stone at the 1st unit,
+        third stone at the 3rd unit, and so on...
+        The last stone at the 17th unit.
+
+        Return true. The frog can jump to the last stone by jumping
+        1 unit to the 2nd stone, then 2 units to the 3rd stone, then
+        2 units to the 4th stone, then 3 units to the 6th stone,
+        4 units to the 7th stone, and 5 units to the 8th stone.
+        Example 2:
+
+        [0,1,2,3,4,8,9,11]
+
+        Return false. There is no way to jump to the last stone as
+        the gap between the 5th and 6th stone is too large.
+
+        :type stones: List[int]
+        :rtype: bool
+        """
+
+        d = {n: set() for n in stones}
+        d[1].add(1)
+
+        for i in xrange(len(stones[1:])):
+            for j in d[stones[i]]:
+                for k in xrange(j - 1, j + 2):
+                    if k > 0 and stones[i] + k in d:
+                        d[stones[i] + k].add(k)
+        return d[stones[-1]] != set()
+
+    def canPartition(self, nums):
+        """
+        416. Partition Equal Subset Sum
+        Given a non-empty array containing only positive integers,
+        find if the array can be partitioned into two subsets such that the sum of elements in both subsets is equal.
+
+        Note:
+        Each of the array element will not exceed 100.
+        The array size will not exceed 200.
+        Example 1:
+
+        Input: [1, 5, 11, 5]
+
+        Output: true
+
+        Explanation: The array can be partitioned as [1, 5, 5] and [11].
+        Example 2:
+
+        Input: [1, 2, 3, 5]
+
+        Output: false
+
+        Explanation: The array cannot be partitioned into equal sum subsets.
+
+        :type nums: List[int]
+        :rtype: bool
+        """
+        s = sum(nums)
+        if s % 2 != 0:
+            return False
+        return self._dfs_leet416(nums, s / 2, 0, len(nums) - 1, {})
+
+    def _dfs_leet416(self, nums, target, index, end, d):
+        if target == 0:
+            return True
+        elif target in d:
+            return d[target]
+        else:
+            d[target] = False
+            if target > 0:
+                for i in xrange(index, end):
+                    if self._dfs_leet416(nums, target - nums[i], i + 1, end, d):
+                        d[target] = True
+                        break
+            return d[target]
+
     def numberOfBoomerangs(self, points):
         """
         447. Number of Boomerangs
@@ -2428,4 +2670,4 @@ class Lists(object):
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.summaryRanges([0, 1, 2, 4, 5, 7])
+    print l.canCross([0, 1, 3, 4, 5, 7, 9, 10, 12])
