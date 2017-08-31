@@ -170,6 +170,48 @@ class Tree(object):
         right = self._find(node.right, n, node.val)
         return max(left, right, n)
 
+    def deleteNode(self, node, key):
+        """
+        :type root: TreeNode
+        :type key: int
+        :rtype: TreeNode
+        """
+        if not node:
+            return None
+
+        if not node.left and not node.right and node.val != key:
+            return node
+
+        if node.val == key:
+            # 1. is a single node
+            if not node.left and not node.right:
+                node = None
+            # 2. has left and right
+            elif node.left and node.right:
+                pre = node.left
+                des = pre.right
+                if not des:
+                    node.val = node.left.val
+                    node.left = node.left.left
+                else:
+                    while des.right:
+                        pre = des
+                        des = des.right
+                    pre.right = des.left
+                    node.val = des.val
+            # 3. has left
+            elif node.left:
+                node = node.left
+                # 4. has right
+            elif node.right:
+                node = node.right
+
+        elif node.val < key:
+            node.right = self.deleteNode(node.right, key)
+        else:
+            node.left = self.deleteNode(node.left, key)
+        return node
+
 
 # Definition for a  binary tree node
 # class TreeNode(object):
@@ -361,6 +403,26 @@ class Trie(object):
         return '(%s),(%s),(%s)' % (root.val, self._serialize(root.left), self._serialize(root.right))
 
 if __name__ == '__main__':
-    c = Codec()
-    node = c.deserialize('1, #, #')
-    print node.val
+    n1 = TreeNode(2)
+    n2 = TreeNode(0)
+    n3 = TreeNode(33)
+    n4 = TreeNode(1)
+    n5 = TreeNode(25)
+    n6 = TreeNode(40)
+    n7 = TreeNode(11)
+    n8 = TreeNode(31)
+    n9 = TreeNode(34)
+    n10 = TreeNode(45)
+    n11 = TreeNode(10)
+    n12 = TreeNode(18)
+    n13 = TreeNode(29)
+    n14 = TreeNode(36)
+    n1.left = n2
+    n1.right = n3
+    n2.right = n4
+    n3.left = n5
+    n3.right = n6
+    n5.left = n7
+    n5.right = n8
+    t = Tree()
+    print t.deleteNode(n1, 33)
