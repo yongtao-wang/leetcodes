@@ -2356,6 +2356,30 @@ class Lists(object):
                 p += 1
             q += 1
 
+    def multiply(self, a, b):
+        """
+        311. Sparse Matrix Multiplication
+        Given two sparse matrices A and B, return the result of AB.
+
+        You may assume that A's column number is equal to B's row number.
+
+        :type A: List[List[int]]
+        :type B: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        if not a or not b:
+            return []
+        matrix = [[0 for _ in xrange(len(b[0]))] for _ in xrange(len(a))]
+        dict_a = {i: n for i, n in enumerate(a) if any(n)}
+        dict_b = {i: n for i, n in enumerate(zip(*b)) if any(n)}
+
+        for i in xrange(len(a)):
+            for j in xrange(len(b[0])):
+                if i in dict_a and j in dict_b:
+                    for k in xrange(len(a[0])):
+                        matrix[i][j] += a[i][k] * b[k][j]
+        return matrix
+
     def maxCoins(self, nums):
         """
         312. Burst Balloons
@@ -2670,4 +2694,4 @@ class Lists(object):
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.canCross([0, 1, 3, 4, 5, 7, 9, 10, 12])
+    print l.multiply([[1,0,0],[-1,0,3]], [[7,0,0],[0,0,0],[0,0,1]])

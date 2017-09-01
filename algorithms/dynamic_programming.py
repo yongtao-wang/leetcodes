@@ -56,7 +56,40 @@ class DynamicProgramming(object):
                 memo[i] = min(checklist) + 1
         return memo[amount] if amount in memo else -1
 
+    def canIWin(self, maxChoosableInteger, desiredTotal):
+        """
+        464. Can I Win
+        In the "100 game," two players take turns adding, to a running total,
+        any integer from 1..10. The player who first causes the running total to reach or exceed 100 wins.
+
+        :type maxChoosableInteger: int
+        :type desiredTotal: int
+        :rtype: bool
+        """
+        if (1 + maxChoosableInteger) * maxChoosableInteger / 2 < desiredTotal:
+            return False
+        return self._solve(range(1, maxChoosableInteger + 1), desiredTotal, {})
+
+    def _solve(self, nums, target, d):
+        h = str(nums)
+        if h in d:
+            return d[h]
+
+        if nums[-1] >= target:
+            d[h] = True
+
+        elif len(nums) == 1 and nums[0] < target:
+            d[h] = False
+
+        else:
+            d[h] = False
+            for i in xrange(len(nums)):
+                if not self._solve(nums[:i] + nums[i + 1:], target - nums[i], d):
+                    d[h] = True
+                    return True
+        return d[h]
+
 
 if __name__ == '__main__':
     dp = DynamicProgramming()
-    print dp.canJump([3, 3, 1, 0, 4])
+    print dp.canIWin(10, 11)
