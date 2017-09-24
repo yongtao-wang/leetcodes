@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 import unittest
 
+from algorithms import dynamic_programming as dp
 from algorithms import linked_list as lk
 from algorithms import lists as lp
+from algorithms import matrix
 from algorithms import numbers
 from algorithms import strings
 from algorithms import substring_and_palindrome as sp
-from algorithms import dynamic_programming as dp
+
 
 
 class Run(unittest.TestCase):
@@ -17,6 +19,7 @@ class Run(unittest.TestCase):
         self.str = strings.Strings()
         self.link = lk.LinkedList()
         self.dp = dp.DynamicProgramming()
+        self.mtx = matrix.Matrix()
 
     def test_two_sum_leet1(self):
         self.assertEqual(self.lst.twoSum([3, 2, 4], 6), [1, 2])
@@ -451,6 +454,11 @@ class Run(unittest.TestCase):
     def test_product_of_array_except_self_leet238(self):
         self.assertEqual(self.lst.productExceptSelf([1, 2, 3, 4]), [24, 12, 8, 6])
 
+    def test_search_matrix(self):
+        m = [[1, 4, 7, 11, 15], [2, 5, 8, 12, 19], [3, 6, 9, 16, 22], [10, 13, 14, 17, 24], [18, 21, 23, 26, 30]]
+        self.assertTrue(self.mtx.searchMatrixII(m, 5))
+        self.assertFalse(self.mtx.searchMatrixII(m, 31))
+
     def test_integer_to_english_words_leet273(self):
         self.assertEqual(self.str.numberToWords(50868), 'Fifty Thousand Eight Hundred Sixty Eight')
         self.assertEqual(self.str.numberToWords(1234567),
@@ -492,6 +500,10 @@ class Run(unittest.TestCase):
 
     def test_number_of_boomerangs_leet447(self):
         self.assertEqual(self.lst.numberOfBoomerangs([[0, 0], [1, 0], [2, 0]]), 2)
+
+    def test_find_longest_word_leet524(self):
+        self.assertEqual(self.lst.findLongestWord("abpcplea", ["ale", "apple", "monkey", "plea"]), "apple")
+        self.assertEqual(self.lst.findLongestWord("abpcpleae", ["ale", "apple", "monkey", "pleae"]), "apple")
 
 
 if __name__ == '__main__':

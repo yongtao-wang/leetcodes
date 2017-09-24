@@ -44,6 +44,36 @@ class SubstringAndPalindrome(object):
                 max_length += 1
         return s[start:start + max_length]
 
+    def palindromePartition(self, s):
+        """
+        131. Palindrome Partitioning
+        Given a string s, partition s such that every substring of the partition is a palindrome.
+
+        Return all possible palindrome partitioning of s.
+
+        For example, given s = "aab",
+        Return
+
+        [
+          ["aa","b"],
+          ["a","a","b"]
+        ]
+
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        res = []
+        self._dfs_leet131(s, [], res)
+        return res
+
+    def _dfs_leet131(self, s, path, res):
+        if not s:
+            res.append(path)
+        for i in xrange(len(s)):
+            if s[:i] and s[:i] == s[:i][::-1]:
+                path.append(s[:i])
+                self._dfs_leet131(s[i:], path, res)
+
     def shortestPalindrome(self, s):
         """
         214. Shortest Palindrome

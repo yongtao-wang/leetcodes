@@ -149,7 +149,18 @@ class Strings(object):
         :type s: str
         :rtype: int
         """
-        '''使用tuple。也可以再设一个变量。只是这样比较Pythonic'''
+        '''
+        # a more readable solution
+        d = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
+        s = str(s)
+        res = d[s[-1]]
+        for i in xrange(len(s) - 1):
+            if d[s[i]] < d[s[i + 1]]:
+                res -= d[s[i]]
+            else:
+                res += d[s[i]]
+        return res
+        '''
         d = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000}
         res, p = 0, 'I'
         for c in s[::-1]:

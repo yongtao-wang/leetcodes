@@ -2094,51 +2094,6 @@ class Lists(object):
                 res.append(nums[d[0]])
         return res
 
-    def searchMatrixII(self, matrix, target):
-        """
-        240. Search a 2D Matrix II
-        Write an efficient algorithm that searches for a value in an m x n matrix.
-        This matrix has the following properties:
-
-        Integers in each row are sorted in ascending from left to right.
-        Integers in each column are sorted in ascending from top to bottom.
-        For example,
-
-        Consider the following matrix:
-
-        [
-          [1,   4,  7, 11, 15],
-          [2,   5,  8, 12, 19],
-          [3,   6,  9, 16, 22],
-          [10, 13, 14, 17, 24],
-          [18, 21, 23, 26, 30]
-        ]
-        Given target = 5, return true.
-
-        Given target = 20, return false.
-
-        :type matrix: List[List[int]]
-        :type target: int
-        :rtype: bool
-        """
-        if not matrix or not matrix[0]:
-            return False
-        for row in matrix:
-            if row[0] > target:
-                break
-            l, r = 0, len(row) - 1
-            while l < r:
-                mid = (l + r) / 2
-                if row[mid] == target:
-                    return True
-                elif row[mid] < target:
-                    l = mid + 1
-                else:
-                    r = mid
-            if row[l] == target or row[r] == target:
-                return True
-        return False
-
     def shortestDistance(self, words, word1, word2):
         """
         243. Shortest Word Distance
@@ -2689,6 +2644,40 @@ class Lists(object):
         :rtype: List[int]
         """
         return list(set(i for i in xrange(1, len(nums) + 1)) - set(nums))
+
+    def findLongestWord(self, s, d):
+        """
+        524. Longest Word in Dictionary through Deleting
+        Given a string and a string dictionary, find the longest string in the dictionary that can be formed by deleting some characters of the given string. If there are more than one possible results, return the longest word with the smallest lexicographical order. If there is no possible result, return the empty string.
+
+        Example 1:
+        Input:
+        s = "abpcplea", d = ["ale","apple","monkey","plea"]
+
+        Output:
+        "apple"
+        Example 2:
+        Input:
+        s = "abpcplea", d = ["a","b","c"]
+
+        Output:
+        "a"
+
+        :type s: str
+        :type d: List[str]
+        :rtype: str
+        """
+        res = ''
+        for word in d:
+            k = 0
+            for char in s:
+                if k < len(word) and word[k] == char:
+                    k += 1
+            if k < len(word):
+                continue
+            if len(word) > len(res) or (len(word) == len(res) and word < res):
+                res = word
+        return res
 
 
 if __name__ == '__main__':
