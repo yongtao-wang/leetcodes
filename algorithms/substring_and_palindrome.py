@@ -107,3 +107,25 @@ class SubstringAndPalindrome(object):
                 min_start, max_len = j, k - j + 1
         prefix = s[min_start + max_len: ll][::-1]
         return prefix + s
+
+    def canPermutePalindrome(self, s):
+        """
+        266. Palindrome Permutation
+        Given a string, determine if a permutation of the string could form a palindrome.
+
+        For example,
+        "code" -> False, "aab" -> True, "carerac" -> True.
+
+        :type s: str
+        :rtype: bool
+        """
+        d = {}
+        for c in s:
+            d[c] = d.get(c, 0) + 1
+        odd_count = 0
+        for val in d.values():
+            if val % 2 == 1:
+                odd_count += 1
+            if odd_count > 1:
+                return False
+        return True

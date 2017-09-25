@@ -668,6 +668,30 @@ class Strings(object):
                 res += c
         return res
 
+    def generateAbbreviations(self, word):
+        """
+        320. Generalized Abbreviation
+        Write a function to generate the generalized abbreviations of a word.
+
+        Example:
+        Given word = "word", return the following list (order does not matter):
+        ["word", "1ord", "w1rd", "wo1d", "wor1", "2rd", "w2d", "wo2", "1o1d", "1or1",
+        "w1r1", "1o2", "2r1", "3d", "w3", "4"]
+
+        :type word: str
+        :rtype: List[str]
+        """
+        res = []
+        self._dfs_leet320(word, 0, '', 0, res)
+        return res
+
+    def _dfs_leet320(self, word, index, cur, count, res):
+        if index >= len(word):
+            res.append(cur + str(count) if count > 0 else cur)
+            return
+        self._dfs_leet320(word, index + 1, cur, count + 1, res)
+        self._dfs_leet320(word, index + 1, cur + (str(count) if count > 0 else '') + word[index], 0, res)
+
     def guessNumber(self, n, c):
         """
         :type n: int
@@ -787,4 +811,4 @@ class Strings(object):
 
 if __name__ == '__main__':
     ss = Strings()
-    print ss
+    print ss.generateAbbreviations('word')

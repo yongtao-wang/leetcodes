@@ -1290,46 +1290,6 @@ class Lists(object):
             for line in matrix:
                 line[0] = 0
 
-    def searchMatrix(self, matrix, target):
-        """
-        74. Search a 2D Matrix
-        Write an efficient algorithm that searches for a value in an m x n matrix.
-        This matrix has the following properties:
-
-        Integers in each row are sorted from left to right.
-        The first integer of each row is greater than the last integer of the previous row.
-        For example,
-
-        Consider the following matrix:
-
-        [
-          [1,   3,  5,  7],
-          [10, 11, 16, 20],
-          [23, 30, 34, 50]
-        ]
-        Given target = 3, return true.
-        :type matrix: List[List[int]]
-        :type target: int
-        :rtype: bool
-        """
-        if not matrix or not matrix[0]:
-            return False
-        line = None
-        l = 0
-        r = len(matrix) - 1
-        while l <= r:
-            mid = (l + r) / 2
-            if target < matrix[l][0] or target > matrix[r][-1]:
-                return False
-            if matrix[mid][0] <= target <= matrix[mid][-1]:
-                line = matrix[mid]
-                break
-            elif target > matrix[mid][-1]:
-                l = mid + 1
-            else:
-                r = mid - 1
-        return target in line
-
     def sortColors(self, nums):
         """
         75. Sort Colors
@@ -2423,6 +2383,57 @@ class Lists(object):
             update(rank[x])
         return res[::-1]
 
+    def findItinerary(self, tickets):
+        """
+        332. Reconstruct Itinerary
+        Given a list of airline tickets represented by pairs of departure and
+        arrival airports [from, to], reconstruct the itinerary in order.
+        All of the tickets belong to a man who departs from JFK. Thus, the itinerary must begin with JFK.
+
+        Note:
+        If there are multiple valid itineraries, you should return the itinerary
+        that has the smallest lexical order when read as a single string.
+        For example, the itinerary ["JFK", "LGA"] has a smaller lexical order than ["JFK", "LGB"].
+
+        All airports are represented by three capital letters (IATA code).
+        You may assume all tickets form at least one valid itinerary.
+
+        Example 1:
+        tickets = [["MUC", "LHR"], ["JFK", "MUC"], ["SFO", "SJC"], ["LHR", "SFO"]]
+        Return ["JFK", "MUC", "LHR", "SFO", "SJC"].
+
+        Example 2:
+        tickets = [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]
+        Return ["JFK","ATL","JFK","SFO","ATL","SFO"].
+        Another possible reconstruction is ["JFK","SFO","ATL","JFK","ATL","SFO"]. But it is larger in lexical order.
+
+        :type tickets: List[List[str]]
+        :rtype: List[str]
+        """
+        d = {}
+        for start, end in tickets:
+            d[start] = d.get(start, []) + [end]
+
+        def dfs(dic, loc):
+            path.append(loc)
+            if len(path) == route_length:
+                return True
+            if loc in dic:
+                i, n = 0, len(dic[loc])
+                while i < n:
+                    next_loc = dic[loc].pop()
+                    if dfs(dic, next_loc):
+                        return True
+                    else:
+                        dic[loc] = [next_loc] + dic[loc]
+                        i += 1
+            path.pop()
+            return False
+
+        path = []
+        route_length = len(tickets) + 1
+        return dfs(d, 'JFK')
+
     def palindromePairs(self, words):
         """
         336. Palindrome Pairs
@@ -2496,6 +2507,49 @@ class Lists(object):
                 l += 1
                 r -= 1
         return ''.join(s)
+
+    def sortTransformedArray(self, nums, a, b, c):
+        """
+        360. Sort Transformed Array
+        Given a sorted array of integers nums and integer values a, b and c.
+        Apply a function of the form f(x) = ax2 + bx + c to each element x in the array.
+
+        The returned array must be in sorted order.
+
+        Expected time complexity: O(n)
+
+        Example:
+        nums = [-4, -2, 2, 4], a = 1, b = 3, c = 5,
+
+        Result: [3, 9, 15, 33]
+
+        nums = [-4, -2, 2, 4], a = -1, b = 3, c = 5
+
+        Result: [-23, -5, 1, 7]
+
+        :type nums: List[int]
+        :type a: int
+        :type b: int
+        :type c: int
+        :rtype: List[int]
+        """
+        res = []
+        if not nums:
+            return res
+
+        def f(x):
+            return a * x * x + b * x + c
+
+        l, r = 0, len(nums) - 1
+        while l <= r:
+            l_cal, r_cal = f(nums[l]), f(nums[r])
+            if (a > 0 and l_cal <= r_cal) or (a <= 0 and l_cal >= r_cal):
+                res.append(r_cal)
+                r -= 1
+            else:
+                res.append(l_cal)
+                l += 1
+        return res if a <= 0 else res[::-1]
 
     def canCross(self, stones):
         """
@@ -2596,6 +2650,57 @@ class Lists(object):
                         break
             return d[target]
 
+    def validWordSquare(self, words):
+        """
+        422. Valid Word Square
+        Given a sequence of words, check whether it forms a valid word square.
+
+        A sequence of words forms a valid word square if the kth row and column
+        read the exact same string, where 0 ≤ k < max(numRows, numColumns).
+
+        Note:
+        The number of words given is at least 1 and does not exceed 500.
+        Word length will be at least 1 and does not exceed 500.
+        Each word contains only lowercase English alphabet a-z.
+        Example 1:
+
+        Input:
+        [
+          "abcd",
+          "bnrt",
+          "crmy",
+          "dtye"
+        ]
+
+        Output:
+        true
+
+        Example 2:
+
+        Input:
+        [
+          "abcd",
+          "bnrt",
+          "crm",
+          "dt"
+        ]
+
+        Output:
+        true
+
+        :type words: List[str]
+        :rtype: bool
+        """
+        n = max(len(w) for w in words)
+        words = [w.ljust(n, '#') for w in words]
+        rotated = [''.join(z) for z in zip(*words)]
+        if len(rotated) != len(words):
+            return False
+        for i, r in enumerate(rotated):
+            if r != words[i]:
+                return False
+        return True
+
     def numberOfBoomerangs(self, points):
         """
         447. Number of Boomerangs
@@ -2683,4 +2788,4 @@ class Lists(object):
 if __name__ == '__main__':
     # debug template
     l = Lists()
-    print l.multiply([[1,0,0],[-1,0,3]], [[7,0,0],[0,0,0],[0,0,1]])
+    print l.findItinerary([["JFK", "SFO"], ["JFK", "ATL"], ["SFO", "ATL"], ["ATL", "JFK"], ["ATL", "SFO"]])
