@@ -2508,6 +2508,54 @@ class Lists(object):
                 r -= 1
         return ''.join(s)
 
+    def numberOfPatterns(self, m, n):
+        """
+        351. Android Unlock Patterns
+        Given an Android 3x3 key lock screen and two integers m and n, where 1 ≤ m ≤ n ≤ 9,
+        count the total number of unlock patterns of the Android lock screen,
+        which consist of minimum of m keys and maximum n keys.
+
+        Rules for a valid pattern:
+        Each pattern must connect at least m keys and at most n keys.
+        All the keys must be distinct.
+        If the line connecting two consecutive keys in the pattern passes through any other keys,
+        the other keys must have previously selected in the pattern. No jumps through non selected
+        key is allowed.
+        The order of keys used matters.
+
+        :type m: int
+        :type n: int
+        :rtype: int
+        """
+        skip = [[0 for _ in xrange(10)] for _ in xrange(10)]
+        skip[1][3] = skip[3][1] = 2
+        skip[1][7] = skip[7][1] = 4
+        skip[3][9] = skip[9][3] = 6
+        skip[7][9] = skip[9][7] = 8
+        skip[1][9] = skip[9][1] = skip[2][8] = skip[8][2] = skip[3][7] = skip[7][3] = skip[4][6] = skip[6][4] = 5
+        visited = [False for _ in xrange(10)]
+        res = 0
+        for i in xrange(m, n):
+            res += self._dfs_leet351(1, visited, skip, i - 1) * 4
+            res += self._dfs_leet351(2, visited, skip, i - 1) * 4
+            res += self._dfs_leet351(5, visited, skip, i - 1)
+        return res
+
+    def _dfs_leet351(self, cur, visited, skip, remain):
+        if remain < 0:
+            return 0
+        if remain == 0:
+            return 1
+        visited[cur] = True
+        res = 0
+        for i in xrange(10):
+            if not visited[i] and (skip[cur][i] == 0 or visited(skip[cur][i])):
+                res += self._dfs_leet351(i, visited, skip, remain - 1)
+        visited[cur] = False
+        return res
+
+
+
     def sortTransformedArray(self, nums, a, b, c):
         """
         360. Sort Transformed Array
@@ -2650,6 +2698,68 @@ class Lists(object):
                         break
             return d[target]
 
+    def pacificAtlantic(self, matrix):
+        """
+        417. Pacific Atlantic Water Flow
+        Given an m x n matrix of non-negative integers representing the
+        height of each unit cell in a continent, the "Pacific ocean" touches the left and
+        top edges of the matrix and the "Atlantic ocean" touches the right and bottom edges.
+
+        Water can only flow in four directions (up, down, left, or right) from a cell to
+        another one with height equal or lower.
+
+        Find the list of grid coordinates where water can flow to both the Pacific and Atlantic ocean.
+
+        Note:
+        The order of returned grid coordinates does not matter.
+        Both m and n are less than 150.
+        Example:
+
+        Given the following 5x5 matrix:
+
+          Pacific ~   ~   ~   ~   ~
+               ~  1   2   2   3  (5) *
+               ~  3   2   3  (4) (4) *
+               ~  2   4  (5)  3   1  *
+               ~ (6) (7)  1   4   5  *
+               ~ (5)  1   1   2   4  *
+                  *   *   *   *   * Atlantic
+
+        Return:
+
+        [[0, 4], [1, 3], [1, 4], [2, 2], [3, 0], [3, 1], [4, 0]] (positions with parentheses in above matrix).
+
+        :type matrix: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        if not matrix or not matrix[0]:
+            return []
+        m, n = len(matrix), len(matrix[0])
+        pacific = [[False for _ in xrange(n)] for _ in xrange(m)]
+        atlantic = [[False for _ in xrange(n)] for _ in xrange(m)]
+        res = []
+        for i in xrange(m):
+            self._dfs_leet417(matrix, i, 0, pacific, m, n)
+            self._dfs_leet417(matrix, i, n - 1, atlantic, m, n)
+        for j in xrange(n):
+            self._dfs_leet417(matrix, 0, j, pacific, m, n)
+            self._dfs_leet417(matrix, m - 1, j, atlantic, m, n)
+
+        for i in xrange(m):
+            for j in xrange(n):
+                if pacific[i][j] and atlantic[i][j]:
+                    res.append((i, j))
+        return res
+
+    def _dfs_leet417(self, matrix, i, j, visited, m, n):
+        visited[i][j] = True
+        directions = [(1, 0), (-1, 0), (0, -1), (0, 1)]
+        for d in directions:
+            x, y = i + d[0], j + d[1]
+            if x < 0 or x >= m or y < 0 or y >= n or visited[x][y] or matrix[x][y] < matrix[i][j]:
+                continue
+            self._dfs_leet417(matrix, x, y, visited, m, n)
+
     def validWordSquare(self, words):
         """
         422. Valid Word Square
@@ -2783,6 +2893,47 @@ class Lists(object):
             if len(word) > len(res) or (len(word) == len(res) and word < res):
                 res = word
         return res
+
+    def checkRecord(self, s):
+        """
+        551. Student Attendance Record I
+        You are given a string representing an attendance record for a student.
+        The record only contains the following three characters:
+
+        'A' : Absent.
+        'L' : Late.
+        'P' : Present.
+
+        A student could be rewarded if his attendance record doesn't contain more than
+        one 'A' (absent) or more than two continuous 'L' (late).
+
+        You need to return whether the student could be rewarded according to his attendance record.
+
+        Example 1:
+        Input: "PPALLP"
+        Output: True
+        Example 2:
+        Input: "PPALLL"
+        Output: False
+
+        :type s: str
+        :rtype: bool
+        """
+        absence = 0
+        late = 0
+        for c in s:
+            if c == 'A':
+                absence += 1
+                late = 0
+                if absence >= 2:
+                    return False
+            elif c == 'L':
+                late += 1
+                if late >= 3:
+                    return False
+            else:
+                late = 0
+        return True
 
 
 if __name__ == '__main__':
