@@ -2554,8 +2554,6 @@ class Lists(object):
         visited[cur] = False
         return res
 
-
-
     def sortTransformedArray(self, nums, a, b, c):
         """
         360. Sort Transformed Array
